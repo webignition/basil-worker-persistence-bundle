@@ -7,7 +7,7 @@ namespace webignition\BasilWorker\PersistenceBundle\Tests\Functional;
 use PHPUnit\Framework\TestCase;
 use Psr\Container\ContainerInterface;
 
-class AbstractFunctionalTest extends TestCase
+abstract class AbstractFunctionalTest extends TestCase
 {
     protected ContainerInterface $container;
 

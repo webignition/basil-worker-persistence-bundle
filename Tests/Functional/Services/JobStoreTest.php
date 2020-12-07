@@ -85,7 +85,7 @@ class JobStoreTest extends AbstractFunctionalTest
 
     public function testStore()
     {
-        $job = \Mockery::mock(Job::class);
+        $job = Job::create('label content', 'http://example.com/callback', 600);
 
         $entityManager = (new MockEntityManager())
             ->withPersistCall($job)

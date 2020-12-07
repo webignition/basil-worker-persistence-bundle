@@ -1,0 +1,10 @@
+services:
+  _defaults:
+    autowire: true
+    autoconfigure: true
+
+  webignition\BasilWorker\PersistenceBundle\Services\:
+    resource: '../Services/'
+
+#  webignition\BasilWorker\PersistenceBundle\Services\JobFactory:
+#    class: webignition\BasilWorker\PersistenceBundle\Services\JobFactory

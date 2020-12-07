@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace webignition\BasilWorker\PersistenceBundle\DependencyInjection;
 
 use Symfony\Component\Config\FileLocator;

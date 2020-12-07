@@ -6,6 +6,7 @@ namespace webignition\BasilWorker\PersistenceBundle\Tests\Mock;
 
 use Doctrine\ORM\EntityManagerInterface;
 use Mockery\MockInterface;
+use PHPUnit\Framework\TestCase;
 use webignition\BasilWorker\PersistenceBundle\Entity\Job;
 
 class MockEntityManager
@@ -39,7 +40,13 @@ class MockEntityManager
     {
         $this->entityManager
             ->shouldReceive('persist')
-            ->with($job);
+            ->withArgs(function (Job $passedJob) use ($job) {
+                TestCase::assertSame($job->getLabel(), $passedJob->getLabel());
+                TestCase::assertSame($job->getCallbackUrl(), $passedJob->getCallbackUrl());
+                TestCase::assertSame($job->getMaximumDurationInSeconds(), $passedJob->getMaximumDurationInSeconds());
+
+                return true;
+            });
 
         return $this;
     }

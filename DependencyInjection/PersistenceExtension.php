@@ -13,7 +13,21 @@ class PersistenceExtension extends Extension
 {
     public function load(array $configs, ContainerBuilder $container): void
     {
+        $environment = $container->getParameter('kernel.environment');
+
+        $serviceConfigurationPaths = [
+            'services.yaml',
+            'services_' . $environment . '.yaml',
+        ];
+
         $loader = new YamlFileLoader($container, new FileLocator(__DIR__ . '/../Resources/config'));
-        $loader->load('services.yaml');
+
+        foreach ($serviceConfigurationPaths as $serviceConfigurationPath) {
+            $path = __DIR__ . '/../Resources/config/' . $serviceConfigurationPath;
+
+            if (file_exists($path)) {
+                $loader->load($serviceConfigurationPath);
+            }
+        }
     }
 }

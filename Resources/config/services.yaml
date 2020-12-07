@@ -2,6 +2,7 @@ services:
   _defaults:
     autowire: true
     autoconfigure: true
+    public: true
 
   webignition\BasilWorker\PersistenceBundle\Services\:
     resource: '../../Services/'

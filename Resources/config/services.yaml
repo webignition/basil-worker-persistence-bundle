@@ -1,18 +1,18 @@
 services:
-#  _defaults:
-#    autowire: true
-#    autoconfigure: true
-#
-##  webignition\BasilWorker\PersistenceBundle\Services\:
-##    resource: '../Services/'
-#
-  webignition\BasilWorker\PersistenceBundle\Services\JobStore:
-    class: webignition\BasilWorker\PersistenceBundle\Services\JobStore
-    arguments:
-      $entityManager: '@Doctrine\ORM\EntityManagerInterface'
-#
-#
-  webignition\BasilWorker\PersistenceBundle\Services\JobFactory:
-    class: webignition\BasilWorker\PersistenceBundle\Services\JobFactory
-    arguments:
-      $jobStore: '@webignition\BasilWorker\PersistenceBundle\Services\JobStore'
+  _defaults:
+    autowire: true
+    autoconfigure: true
+
+  webignition\BasilWorker\PersistenceBundle\Services\:
+    resource: '../Services/'
+
+#  webignition\BasilWorker\PersistenceBundle\Services\JobStore:
+#    class: webignition\BasilWorker\PersistenceBundle\Services\JobStore
+#    arguments:
+#      $entityManager: '@Doctrine\ORM\EntityManagerInterface'
+##
+##
+#  webignition\BasilWorker\PersistenceBundle\Services\JobFactory:
+#    class: webignition\BasilWorker\PersistenceBundle\Services\JobFactory
+#    arguments:
+#      $jobStore: '@webignition\BasilWorker\PersistenceBundle\Services\JobStore'

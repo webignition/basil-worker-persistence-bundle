@@ -1,6 +1,6 @@
 <?php
 
-namespace webignition\WorkerBundle\PersistenceBundle;
+namespace webignition\BasilWorker\PersistenceBundle;
 
 use Symfony\Component\HttpKernel\Bundle\Bundle;
 

@@ -13,16 +13,18 @@
   ],
   "require": {
     "php": ">=7.4",
+    "ext-json": "*",
+    "doctrine/orm": "^2.8",
     "symfony/http-kernel": "^5.2"
   },
   "autoload": {
-    "psr-4": { "webignition\\WorkerBundle\\PersistenceBundle\\": "" },
+    "psr-4": { "webignition\\BasilWorker\\PersistenceBundle\\": "" },
     "exclude-from-classmap": [
       "/Tests/"
     ]
   },
   "autoload-dev": {
-    "psr-4": { "webignition\\WorkerBundle\\PersistenceBundle\\Tests\\": "" }
+    "psr-4": { "webignition\\BasilWorker\\PersistenceBundle\\Tests\\": "" }
   },
   "config": {
     "sort-packages": true

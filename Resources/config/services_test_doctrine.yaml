@@ -31,3 +31,5 @@ services:
     factory: ['Doctrine\ORM\EntityManager', 'create']
     arguments:
       $connection: '@Doctrine\DBAL\Connection'
+
+  Doctrine\Persistence\ManagerRegistry: ~

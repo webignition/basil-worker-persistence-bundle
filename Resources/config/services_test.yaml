@@ -12,3 +12,4 @@ services:
       $entityManager: '@Doctrine\ORM\EntityManagerInterface'
       $entityClasses:
         - 'webignition\BasilWorker\PersistenceBundle\Entity\Job'
+        - 'webignition\BasilWorker\PersistenceBundle\Entity\Source'

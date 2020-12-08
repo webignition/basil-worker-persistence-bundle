@@ -23,15 +23,6 @@ class JobStoreTest extends AbstractFunctionalTest
         }
     }
 
-    public function testEntityMapping()
-    {
-        $repository = $this->entityManager->getRepository(Job::class);
-        self::assertCount(0, $repository->findAll());
-
-        $this->jobStore->store(Job::create('label content', 'http://example.com/callback', 600));
-        self::assertCount(1, $repository->findAll());
-    }
-
     public function testHas()
     {
         self::assertFalse($this->jobStore->has());

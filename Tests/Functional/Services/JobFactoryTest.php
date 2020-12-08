@@ -7,8 +7,6 @@ namespace webignition\BasilWorker\PersistenceBundle\Tests\Functional\Services;
 use webignition\BasilWorker\PersistenceBundle\Entity\Job;
 use webignition\BasilWorker\PersistenceBundle\Services\JobFactory;
 use webignition\BasilWorker\PersistenceBundle\Tests\Functional\AbstractFunctionalTest;
-use webignition\BasilWorker\PersistenceBundle\Tests\Mock\MockJobStore;
-use webignition\ObjectReflector\ObjectReflector;
 
 class JobFactoryTest extends AbstractFunctionalTest
 {
@@ -31,17 +29,11 @@ class JobFactoryTest extends AbstractFunctionalTest
         $callbackUrl = 'http://example.com';
         $maximumDurationInSeconds = 600;
 
-        $jobStore = (new MockJobStore())
-            ->withStoreCall(Job::create($label, $callbackUrl, $maximumDurationInSeconds))
-            ->getMock();
+        $job = $this->jobFactory->create($label, $callbackUrl, $maximumDurationInSeconds);
 
-        ObjectReflector::setProperty(
-            $this->jobFactory,
-            JobFactory::class,
-            'jobStore',
-            $jobStore
-        );
-
-        $this->jobFactory->create($label, $callbackUrl, $maximumDurationInSeconds);
+        self::assertSame(Job::ID, $job->getId());
+        self::assertSame($label, $job->getLabel());
+        self::assertSame($callbackUrl, $job->getCallbackUrl());
+        self::assertSame($maximumDurationInSeconds, $job->getMaximumDurationInSeconds());
     }
 }

@@ -13,8 +13,3 @@ parameters:
     -
       message: '#DataProvider\(\) return type has no value type specified in iterable type array#'
       path: 'Tests'
-
-    # Ignore everything to do with NullEntityManager
-    -
-      message: '#.*#'
-      path: 'Tests/Mock/NullEntityManager.php'

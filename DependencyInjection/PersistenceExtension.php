@@ -34,13 +34,13 @@ class PersistenceExtension extends Extension
 
     private function isInSelfTestEnvironment(ContainerBuilder $container): bool
     {
-        $kernelProjectDirectory = realpath($container->getParameter('kernel.project_dir'));
-        $bundleDirectory = realpath(__DIR__ . '/..');
-
-        if ($kernelProjectDirectory !== $bundleDirectory) {
+        if ('test' !== $container->getParameter('kernel.environment')) {
             return false;
         }
 
-        return 'test' === $container->getParameter('kernel.environment');
+        $kernelProjectDirectory = realpath($container->getParameter('kernel.project_dir'));
+        $bundleDirectory = realpath(__DIR__ . '/..');
+
+        return $kernelProjectDirectory === $bundleDirectory;
     }
 }

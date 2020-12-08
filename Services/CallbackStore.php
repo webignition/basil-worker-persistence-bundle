@@ -11,11 +11,21 @@ use webignition\BasilWorker\PersistenceBundle\Entity\Callback\CallbackInterface;
 
 class CallbackStore
 {
+    private EntityManagerInterface $entityManager;
     private ObjectRepository $repository;
 
     public function __construct(EntityManagerInterface $entityManager)
     {
+        $this->entityManager = $entityManager;
         $this->repository = $entityManager->getRepository(CallbackEntity::class);
+    }
+
+    public function store(CallbackInterface $callback): CallbackInterface
+    {
+        $this->entityManager->persist($callback->getEntity());
+        $this->entityManager->flush();
+
+        return $callback;
     }
 
     public function get(int $id): ?CallbackEntity

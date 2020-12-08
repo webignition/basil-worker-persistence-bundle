@@ -13,12 +13,13 @@ class PersistenceExtension extends Extension
 {
     public function load(array $configs, ContainerBuilder $container): void
     {
-        $environment = $container->getParameter('kernel.environment');
-
         $serviceConfigurationPaths = [
             'services.yaml',
-            'services_' . $environment . '.yaml',
         ];
+
+        if ($this->isInSelfTestEnvironment($container)) {
+            $serviceConfigurationPaths[] = 'services_test.yaml';
+        }
 
         $loader = new YamlFileLoader($container, new FileLocator(__DIR__ . '/../Resources/config'));
 
@@ -29,5 +30,17 @@ class PersistenceExtension extends Extension
                 $loader->load($serviceConfigurationPath);
             }
         }
+    }
+
+    private function isInSelfTestEnvironment(ContainerBuilder $container): bool
+    {
+        if ('test' !== $container->getParameter('kernel.environment')) {
+            return false;
+        }
+
+        $kernelProjectDirectory = realpath($container->getParameter('kernel.project_dir'));
+        $bundleDirectory = realpath(__DIR__ . '/..');
+
+        return $kernelProjectDirectory === $bundleDirectory;
     }
 }

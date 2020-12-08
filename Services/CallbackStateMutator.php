@@ -62,7 +62,7 @@ class CallbackStateMutator
     {
         $callback->setState($state);
 
-        $this->entityManager->persist($callback);
+        $this->entityManager->persist($callback->getEntity());
         $this->entityManager->flush();
     }
 }

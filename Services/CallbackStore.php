@@ -33,6 +33,11 @@ class CallbackStore
         return $this->repository->find($id);
     }
 
+    public function getCount(): int
+    {
+        return count($this->repository->findAll());
+    }
+
     public function getFinishedCount(): int
     {
         return count($this->repository->findBy([

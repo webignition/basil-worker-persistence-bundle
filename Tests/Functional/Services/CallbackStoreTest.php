@@ -43,6 +43,20 @@ class CallbackStoreTest extends AbstractFunctionalTest
         );
     }
 
+    public function testGetCount()
+    {
+        self::assertSame(0, $this->callbackStore->getCount());
+
+        $this->callbackFactory->create(CallbackInterface::TYPE_COMPILE_FAILURE, []);
+        self::assertSame(1, $this->callbackStore->getCount());
+
+        $this->callbackFactory->create(CallbackInterface::TYPE_COMPILE_FAILURE, []);
+        self::assertSame(2, $this->callbackStore->getCount());
+
+        $this->callbackFactory->create(CallbackInterface::TYPE_COMPILE_FAILURE, []);
+        self::assertSame(3, $this->callbackStore->getCount());
+    }
+
     /**
      * @dataProvider getFinishedCountDataProvider
      *

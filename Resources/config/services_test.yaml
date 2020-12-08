@@ -11,5 +11,6 @@ services:
     arguments:
       $entityManager: '@Doctrine\ORM\EntityManagerInterface'
       $entityClasses:
+        - 'webignition\BasilWorker\PersistenceBundle\Entity\Callback\CallbackEntity'
         - 'webignition\BasilWorker\PersistenceBundle\Entity\Job'
         - 'webignition\BasilWorker\PersistenceBundle\Entity\Source'

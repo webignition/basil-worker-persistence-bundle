@@ -162,25 +162,22 @@ class TestRepositoryTest extends AbstractEntityRepositoryTest
     public function findMaxPositionDataProvider(): array
     {
         $tests = [
-            'position1' => Test::create(
+            'position1' => $this->createTest(
                 TestConfiguration::create('chrome', 'http://example.com/1'),
                 '',
                 '',
-                1,
                 1
             ),
-            'position2' => Test::create(
+            'position2' => $this->createTest(
                 TestConfiguration::create('chrome', 'http://example.com/2'),
                 '',
                 '',
-                1,
                 2
             ),
-            'position3' => Test::create(
+            'position3' => $this->createTest(
                 TestConfiguration::create('chrome', 'http://example.com/3'),
                 '',
                 '',
-                1,
                 3
             ),
         ];
@@ -227,5 +224,144 @@ class TestRepositoryTest extends AbstractEntityRepositoryTest
                 'expectedMaxPosition' => 3,
             ],
         ];
+    }
+
+    /**
+     * @dataProvider findNextAwaitingDataProvider
+     *
+     * @param Test[] $tests
+     */
+    public function testFindNextAwaiting(array $tests, ?Test $expectedNextAwaiting)
+    {
+        foreach ($tests as $test) {
+            $this->persistEntity($test);
+        }
+
+        self::assertInstanceOf(TestRepository::class, $this->repository);
+        if ($this->repository instanceof TestRepository) {
+            $nextAwaiting = $this->repository->findNextAwaiting();
+
+            if ($expectedNextAwaiting instanceof Test) {
+                self::assertInstanceOf(Test::class, $nextAwaiting);
+                self::assertSame(
+                    $expectedNextAwaiting->getConfiguration()->getUrl(),
+                    $nextAwaiting->getConfiguration()->getUrl()
+                );
+                self::assertSame($expectedNextAwaiting->getPosition(), $nextAwaiting->getPosition());
+            } else {
+                self::assertNull($nextAwaiting);
+            }
+        }
+    }
+
+    public function findNextAwaitingDataProvider(): array
+    {
+        $tests = [
+            'awaiting1' => $this->createTest(
+                TestConfiguration::create('chrome', 'http://example.com/awaiting1'),
+                '',
+                '',
+                1,
+                Test::STATE_AWAITING
+            ),
+            'awaiting2' => $this->createTest(
+                TestConfiguration::create('chrome', 'http://example.com/awaiting2'),
+                '',
+                '',
+                2,
+                Test::STATE_AWAITING
+            ),
+            'running' => $this->createTest(
+                TestConfiguration::create('chrome', 'http://example.com/running'),
+                '',
+                '',
+                3,
+                Test::STATE_FAILED
+            ),
+            'failed' => $this->createTest(
+                TestConfiguration::create('chrome', 'http://example.com/failed'),
+                '',
+                '',
+                4,
+                Test::STATE_FAILED
+            ),
+            'complete' => $this->createTest(
+                TestConfiguration::create('chrome', 'http://example.com/complete'),
+                '',
+                '',
+                5,
+                Test::STATE_COMPLETE
+            ),
+        ];
+
+        return [
+            'empty' => [
+                'tests' => [],
+                'expectedNextAwaiting' => null,
+            ],
+            'awaiting1' => [
+                'tests' => [
+                    $tests['awaiting1'],
+                ],
+                'expectedNextAwaiting' => $tests['awaiting1'],
+            ],
+            'awaiting2' => [
+                'tests' => [
+                    $tests['awaiting2'],
+                ],
+                'expectedNextAwaiting' => $tests['awaiting2'],
+            ],
+            'awaiting1, awaiting2' => [
+                'tests' => [
+                    $tests['awaiting1'],
+                    $tests['awaiting2'],
+                ],
+                'expectedNextAwaiting' => $tests['awaiting1'],
+            ],
+            'awaiting2, awaiting1' => [
+                'tests' => [
+                    $tests['awaiting2'],
+                    $tests['awaiting1'],
+                ],
+                'expectedNextAwaiting' => $tests['awaiting1'],
+            ],
+            'running, failed, complete' => [
+                'tests' => [
+                    $tests['running'],
+                    $tests['failed'],
+                    $tests['complete'],
+                ],
+                'expectedNextAwaiting' => null,
+            ],
+        ];
+    }
+
+    /**
+     * @param TestConfiguration $configuration
+     * @param string $source
+     * @param string $target
+     * @param int $position
+     * @param Test::STATE_* $state
+     *
+     * @return Test
+     */
+    private function createTest(
+        TestConfiguration $configuration,
+        string $source,
+        string $target,
+        int $position,
+        string $state = Test::STATE_AWAITING
+    ): Test {
+        $test = Test::create(
+            $configuration,
+            $source,
+            $target,
+            1,
+            $position
+        );
+
+        $test->setState($state);
+
+        return $test;
     }
 }

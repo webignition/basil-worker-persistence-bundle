@@ -6,23 +6,19 @@ namespace webignition\BasilWorker\PersistenceBundle\Services\Factory;
 
 use webignition\BasilWorker\PersistenceBundle\Entity\Callback\CallbackEntity;
 use webignition\BasilWorker\PersistenceBundle\Entity\Callback\CallbackInterface;
-use webignition\BasilWorker\PersistenceBundle\Services\Persister\CallbackPersister;
 
-class CallbackFactory
+class CallbackFactory extends AbstractFactory
 {
-    private CallbackPersister $callbackPersister;
-
-    public function __construct(CallbackPersister $callbackPersister)
-    {
-        $this->callbackPersister = $callbackPersister;
-    }
-
     /**
      * @param CallbackInterface::TYPE_* $type
      * @param array<mixed> $payload
      */
     public function create(string $type, array $payload): CallbackInterface
     {
-        return $this->callbackPersister->persist(CallbackEntity::create($type, $payload));
+        $callback = CallbackEntity::create($type, $payload);
+
+        $this->persist($callback);
+
+        return $callback;
     }
 }

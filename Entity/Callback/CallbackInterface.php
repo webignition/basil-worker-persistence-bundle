@@ -4,7 +4,9 @@ declare(strict_types=1);
 
 namespace webignition\BasilWorker\PersistenceBundle\Entity\Callback;
 
-interface CallbackInterface
+use webignition\BasilWorker\PersistenceBundle\Entity\EntityInterface;
+
+interface CallbackInterface extends EntityInterface
 {
     public const STATE_AWAITING = 'awaiting';
     public const STATE_QUEUED = 'queued';
@@ -16,7 +18,6 @@ interface CallbackInterface
     public const TYPE_EXECUTE_DOCUMENT_RECEIVED = 'execute-document-received';
     public const TYPE_JOB_TIMEOUT = 'job-timeout';
 
-    public function getId(): ?int;
     public function getEntity(): CallbackEntity;
 
     /**

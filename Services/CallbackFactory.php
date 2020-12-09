@@ -6,14 +6,15 @@ namespace webignition\BasilWorker\PersistenceBundle\Services;
 
 use webignition\BasilWorker\PersistenceBundle\Entity\Callback\CallbackEntity;
 use webignition\BasilWorker\PersistenceBundle\Entity\Callback\CallbackInterface;
+use webignition\BasilWorker\PersistenceBundle\Services\Persister\CallbackPersister;
 
 class CallbackFactory
 {
-    private CallbackStore $callbackStore;
+    private CallbackPersister $callbackPersister;
 
-    public function __construct(CallbackStore $callbackStore)
+    public function __construct(CallbackPersister $callbackPersister)
     {
-        $this->callbackStore = $callbackStore;
+        $this->callbackPersister = $callbackPersister;
     }
 
     /**
@@ -22,6 +23,6 @@ class CallbackFactory
      */
     public function create(string $type, array $payload): CallbackInterface
     {
-        return $this->callbackStore->store(CallbackEntity::create($type, $payload));
+        return $this->callbackPersister->persist(CallbackEntity::create($type, $payload));
     }
 }

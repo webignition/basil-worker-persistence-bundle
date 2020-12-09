@@ -2,10 +2,10 @@
 
 declare(strict_types=1);
 
-namespace webignition\BasilWorker\PersistenceBundle\Tests\Functional\Services;
+namespace webignition\BasilWorker\PersistenceBundle\Tests\Functional\Services\Factory;
 
 use webignition\BasilWorker\PersistenceBundle\Entity\Job;
-use webignition\BasilWorker\PersistenceBundle\Services\JobFactory;
+use webignition\BasilWorker\PersistenceBundle\Services\Factory\JobFactory;
 use webignition\BasilWorker\PersistenceBundle\Tests\Functional\AbstractFunctionalTest;
 
 class JobFactoryTest extends AbstractFunctionalTest

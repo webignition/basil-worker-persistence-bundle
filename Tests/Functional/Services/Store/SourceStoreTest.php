@@ -2,11 +2,11 @@
 
 declare(strict_types=1);
 
-namespace webignition\BasilWorker\PersistenceBundle\Tests\Functional\Services;
+namespace webignition\BasilWorker\PersistenceBundle\Tests\Functional\Services\Store;
 
 use webignition\BasilWorker\PersistenceBundle\Entity\Source;
-use webignition\BasilWorker\PersistenceBundle\Services\SourceFactory;
-use webignition\BasilWorker\PersistenceBundle\Services\SourceStore;
+use webignition\BasilWorker\PersistenceBundle\Services\Factory\SourceFactory;
+use webignition\BasilWorker\PersistenceBundle\Services\Store\SourceStore;
 use webignition\BasilWorker\PersistenceBundle\Tests\Functional\AbstractFunctionalTest;
 
 class SourceStoreTest extends AbstractFunctionalTest

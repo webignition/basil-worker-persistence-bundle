@@ -5,19 +5,20 @@ declare(strict_types=1);
 namespace webignition\BasilWorker\PersistenceBundle\Services;
 
 use webignition\BasilWorker\PersistenceBundle\Entity\Job;
+use webignition\BasilWorker\PersistenceBundle\Services\Persister\JobPersister;
 
 class JobFactory
 {
-    private JobStore $jobStore;
+    private JobPersister $jobPersister;
 
-    public function __construct(JobStore $jobStore)
+    public function __construct(JobPersister $jobPersister)
     {
-        $this->jobStore = $jobStore;
+        $this->jobPersister = $jobPersister;
     }
 
     public function create(string $label, string $callbackUrl, int $maximumDurationInSeconds): Job
     {
-        return $this->jobStore->store(
+        return $this->jobPersister->persist(
             Job::create($label, $callbackUrl, $maximumDurationInSeconds)
         );
     }

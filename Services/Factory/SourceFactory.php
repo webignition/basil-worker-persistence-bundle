@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace webignition\BasilWorker\PersistenceBundle\Services;
+namespace webignition\BasilWorker\PersistenceBundle\Services\Factory;
 
 use webignition\BasilWorker\PersistenceBundle\Entity\Source;
 use webignition\BasilWorker\PersistenceBundle\Services\Persister\SourcePersister;

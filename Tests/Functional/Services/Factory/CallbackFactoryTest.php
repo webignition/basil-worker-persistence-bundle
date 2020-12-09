@@ -2,10 +2,10 @@
 
 declare(strict_types=1);
 
-namespace webignition\BasilWorker\PersistenceBundle\Tests\Functional\Services;
+namespace webignition\BasilWorker\PersistenceBundle\Tests\Functional\Services\Factory;
 
 use webignition\BasilWorker\PersistenceBundle\Entity\Callback\CallbackInterface;
-use webignition\BasilWorker\PersistenceBundle\Services\CallbackFactory;
+use webignition\BasilWorker\PersistenceBundle\Services\Factory\CallbackFactory;
 use webignition\BasilWorker\PersistenceBundle\Tests\Functional\AbstractFunctionalTest;
 
 class CallbackFactoryTest extends AbstractFunctionalTest

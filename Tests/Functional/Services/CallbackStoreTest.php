@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace webignition\BasilWorker\PersistenceBundle\Tests\Functional\Services;
 
 use webignition\BasilWorker\PersistenceBundle\Entity\Callback\CallbackInterface;
-use webignition\BasilWorker\PersistenceBundle\Services\CallbackFactory;
+use webignition\BasilWorker\PersistenceBundle\Services\Factory\CallbackFactory;
 use webignition\BasilWorker\PersistenceBundle\Services\CallbackStore;
 use webignition\BasilWorker\PersistenceBundle\Tests\Functional\AbstractFunctionalTest;
 

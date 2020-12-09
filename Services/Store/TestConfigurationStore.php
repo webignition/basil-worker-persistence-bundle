@@ -4,39 +4,31 @@ declare(strict_types=1);
 
 namespace webignition\BasilWorker\PersistenceBundle\Services\Store;
 
-use Doctrine\ORM\EntityManagerInterface;
-use Doctrine\Persistence\ObjectRepository;
 use webignition\BasilWorker\PersistenceBundle\Entity\TestConfiguration;
-use webignition\BasilWorker\PersistenceBundle\Services\EntityPersister;
+use webignition\BasilWorker\PersistenceBundle\Services\Factory\TestConfigurationFactory;
+use webignition\BasilWorker\PersistenceBundle\Services\Repository\TestConfigurationRepository;
 
 class TestConfigurationStore
 {
-    private EntityPersister $persister;
-    private ObjectRepository $repository;
+    private TestConfigurationRepository $repository;
+    private TestConfigurationFactory $factory;
 
-    public function __construct(EntityPersister $persister, EntityManagerInterface $entityManager)
+    public function __construct(TestConfigurationRepository $repository, TestConfigurationFactory $factory)
     {
-        $this->persister = $persister;
-        $this->repository = $entityManager->getRepository(TestConfiguration::class);
+        $this->repository = $repository;
+        $this->factory = $factory;
     }
 
     public function get(TestConfiguration $testConfiguration): TestConfiguration
     {
-        return $this->find($testConfiguration->getBrowser(), $testConfiguration->getUrl());
-    }
-
-    private function find(string $browser, string $url): TestConfiguration
-    {
-        $testConfiguration = $this->repository->findOneBy([
-            'browser' => $browser,
-            'url' => $url,
-        ]);
-
-        if (!$testConfiguration instanceof TestConfiguration) {
-            $testConfiguration = TestConfiguration::create($browser, $url);
-            $this->persister->persist($testConfiguration);
+        $existingConfiguration = $this->repository->findOneByConfiguration($testConfiguration);
+        if ($existingConfiguration instanceof TestConfiguration) {
+            return $existingConfiguration;
         }
 
-        return $testConfiguration;
+        return $this->factory->create(
+            $testConfiguration->getBrowser(),
+            $testConfiguration->getUrl()
+        );
     }
 }

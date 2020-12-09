@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace webignition\BasilWorker\PersistenceBundle\Tests\Functional\Services\Repository;
 
+use webignition\BasilWorker\PersistenceBundle\Entity\EntityInterface;
 use webignition\BasilWorker\PersistenceBundle\Entity\Source;
 use webignition\BasilWorker\PersistenceBundle\Services\Repository\SourceRepository;
 
@@ -22,7 +23,7 @@ class SourceRepositoryTest extends AbstractEntityRepositoryTest
         return null;
     }
 
-    protected function createSingleEntity(): object
+    protected function createSingleEntity(): EntityInterface
     {
         return Source::create(Source::TYPE_TEST, 'Test/test.yml');
     }

@@ -6,6 +6,7 @@ namespace webignition\BasilWorker\PersistenceBundle\Tests\Functional\Services\Re
 
 use webignition\BasilWorker\PersistenceBundle\Entity\Callback\CallbackEntity;
 use webignition\BasilWorker\PersistenceBundle\Entity\Callback\CallbackInterface;
+use webignition\BasilWorker\PersistenceBundle\Entity\EntityInterface;
 use webignition\BasilWorker\PersistenceBundle\Services\Repository\CallbackRepository;
 
 /**
@@ -23,7 +24,7 @@ class CallbackRepositoryTest extends AbstractEntityRepositoryTest
         return null;
     }
 
-    protected function createSingleEntity(): object
+    protected function createSingleEntity(): EntityInterface
     {
         return CallbackEntity::create(CallbackInterface::TYPE_COMPILE_FAILURE, []);
     }

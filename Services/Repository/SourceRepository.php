@@ -6,28 +6,28 @@ namespace webignition\BasilWorker\PersistenceBundle\Services\Repository;
 
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\Persistence\ObjectRepository;
-use webignition\BasilWorker\PersistenceBundle\Entity\Callback\CallbackEntity;
+use webignition\BasilWorker\PersistenceBundle\Entity\Source;
 
 /**
- * @extends \Doctrine\Persistence\ObjectRepository<CallbackEntity>
+ * @extends \Doctrine\Persistence\ObjectRepository<Source>
  */
-class CallbackRepository implements ObjectRepository
+class SourceRepository implements ObjectRepository
 {
     private EntityManagerInterface $entityManager;
     private ObjectRepository $repository;
 
     public function __construct(EntityManagerInterface $entityManager)
     {
-        $this->repository = $entityManager->getRepository(CallbackEntity::class);
+        $this->repository = $entityManager->getRepository(Source::class);
     }
 
-    public function find($id): ?CallbackEntity
+    public function find($id): ?Source
     {
         return $this->repository->find($id);
     }
 
     /**
-     * @return CallbackEntity[]
+     * @return Source[]
      */
     public function findAll(): array
     {
@@ -40,7 +40,7 @@ class CallbackRepository implements ObjectRepository
      * @param int|null $limit
      * @param int|null $offset
      *
-     * @return CallbackEntity[]
+     * @return Source[]
      */
     public function findBy(array $criteria, ?array $orderBy = null, $limit = null, $offset = null): array
     {
@@ -51,14 +51,14 @@ class CallbackRepository implements ObjectRepository
      * @param mixed[] $criteria
      * @param string[]|null $orderBy
      *
-     * @return CallbackEntity|null
+     * @return Source|null
      */
-    public function findOneBy(array $criteria, ?array $orderBy = null): ?CallbackEntity
+    public function findOneBy(array $criteria, ?array $orderBy = null): ?Source
     {
         $callbacks = $this->repository->findBy($criteria, $orderBy, 1, 0);
         $callback = $callbacks[0] ?? null;
 
-        return $callback instanceof CallbackEntity ? $callback : null;
+        return $callback instanceof Source ? $callback : null;
     }
 
     public function getClassName(): string

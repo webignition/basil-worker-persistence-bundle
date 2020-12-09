@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace webignition\BasilWorker\PersistenceBundle\Services;
+namespace webignition\BasilWorker\PersistenceBundle\Services\Store;
 
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\NonUniqueResultException;

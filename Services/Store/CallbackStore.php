@@ -4,58 +4,43 @@ declare(strict_types=1);
 
 namespace webignition\BasilWorker\PersistenceBundle\Services\Store;
 
-use Doctrine\ORM\EntityManagerInterface;
-use Doctrine\Persistence\ObjectRepository;
-use webignition\BasilWorker\PersistenceBundle\Entity\Callback\CallbackEntity;
 use webignition\BasilWorker\PersistenceBundle\Entity\Callback\CallbackInterface;
+use webignition\BasilWorker\PersistenceBundle\Services\Repository\CallbackRepository;
 
 class CallbackStore
 {
-    /**
-     * @var ObjectRepository<CallbackEntity>
-     */
-    private ObjectRepository $repository;
+    private CallbackRepository $repository;
 
-    public function __construct(EntityManagerInterface $entityManager)
+    public function __construct(CallbackRepository $repository)
     {
-        $this->repository = $entityManager->getRepository(CallbackEntity::class);
-    }
-
-    public function get(int $id): ?CallbackEntity
-    {
-        return $this->repository->find($id);
-    }
-
-    public function getCount(): int
-    {
-        return count($this->repository->findAll());
+        $this->repository = $repository;
     }
 
     public function getFinishedCount(): int
     {
-        return count($this->repository->findBy([
+        return $this->repository->count([
             'state' => [
                 CallbackInterface::STATE_FAILED,
                 CallbackInterface::STATE_COMPLETE,
             ],
-        ]));
+        ]);
     }
 
     public function getCompileFailureTypeCount(): int
     {
-        return count($this->repository->findBy([
+        return $this->repository->count([
             'type' => [
                 CallbackInterface::TYPE_COMPILE_FAILURE,
             ],
-        ]));
+        ]);
     }
 
     public function getJobTimeoutTypeCount(): int
     {
-        return count($this->repository->findBy([
+        return $this->repository->count([
             'type' => [
                 CallbackInterface::TYPE_JOB_TIMEOUT,
             ],
-        ]));
+        ]);
     }
 }

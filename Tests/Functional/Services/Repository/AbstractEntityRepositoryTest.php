@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace webignition\BasilWorker\PersistenceBundle\Tests\Functional\Services\Repository;
 
+use Doctrine\ORM\QueryBuilder;
 use webignition\BasilWorker\PersistenceBundle\Entity\EntityInterface;
 use webignition\BasilWorker\PersistenceBundle\Services\Repository\EntityRepositoryInterface;
 use webignition\BasilWorker\PersistenceBundle\Tests\Functional\AbstractFunctionalTest;
@@ -107,5 +108,13 @@ abstract class AbstractEntityRepositoryTest extends AbstractFunctionalTest
         }
 
         self::assertSame($expectedCount, $this->repository->count($criteria));
+    }
+
+    public function testCreateQueryBuilder()
+    {
+        $queryBuilder = $this->repository->createQueryBuilder('Foo');
+
+        self::assertInstanceOf(QueryBuilder::class, $queryBuilder);
+        self::assertSame($this->entityManager, $queryBuilder->getEntityManager());
     }
 }

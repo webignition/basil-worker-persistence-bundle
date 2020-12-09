@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace webignition\BasilWorker\PersistenceBundle\Services\Repository;
 
 use Doctrine\ORM\EntityManagerInterface;
+use Doctrine\ORM\QueryBuilder;
 use Doctrine\Persistence\ObjectRepository;
 
 /**
@@ -28,6 +29,13 @@ abstract class AbstractEntityRepository implements EntityRepositoryInterface
     {
         $this->entityManager = $entityManager;
         $this->repository = $entityManager->getRepository($className);
+    }
+
+    public function createQueryBuilder(string $alias, $indexBy = null): QueryBuilder
+    {
+        return $this->entityManager->createQueryBuilder()
+            ->select($alias)
+            ->from($this->getClassName(), $alias, $indexBy);
     }
 
     /**

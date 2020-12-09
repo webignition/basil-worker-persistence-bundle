@@ -2,11 +2,12 @@
 
 declare(strict_types=1);
 
-namespace webignition\BasilWorker\PersistenceBundle\Services\Persister;
+namespace webignition\BasilWorker\PersistenceBundle\Services;
 
 use Doctrine\ORM\EntityManagerInterface;
+use webignition\BasilWorker\PersistenceBundle\Entity\EntityInterface;
 
-abstract class AbstractObjectPersister
+class EntityPersister
 {
     private EntityManagerInterface $entityManager;
 
@@ -15,11 +16,11 @@ abstract class AbstractObjectPersister
         $this->entityManager = $entityManager;
     }
 
-    protected function doPersist(object $object): object
+    public function persist(EntityInterface $entity): EntityInterface
     {
-        $this->entityManager->persist($object);
+        $this->entityManager->persist($entity);
         $this->entityManager->flush();
 
-        return $object;
+        return $entity;
     }
 }

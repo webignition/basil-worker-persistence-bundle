@@ -1,0 +1,111 @@
+<?php
+
+declare(strict_types=1);
+
+namespace webignition\BasilWorker\PersistenceBundle\Tests\Functional\Services\Repository;
+
+use webignition\BasilWorker\PersistenceBundle\Entity\EntityInterface;
+use webignition\BasilWorker\PersistenceBundle\Services\Repository\EntityRepositoryInterface;
+use webignition\BasilWorker\PersistenceBundle\Tests\Functional\AbstractFunctionalTest;
+
+/**
+ * @template T
+ */
+abstract class AbstractEntityRepositoryTest extends AbstractFunctionalTest
+{
+    /**
+     * @var EntityRepositoryInterface<T>
+     */
+    private EntityRepositoryInterface $repository;
+
+    protected function setUp(): void
+    {
+        parent::setUp();
+
+        $repository = $this->getRepository();
+        if ($repository instanceof EntityRepositoryInterface) {
+            $this->repository = $repository;
+        }
+    }
+
+    /**
+     * @return EntityRepositoryInterface<T>
+     */
+    abstract protected function getRepository(): ?EntityRepositoryInterface;
+    abstract protected function createSingleEntity(): object;
+    abstract protected function findOneByDataProvider(): array;
+    abstract protected function countDataProvider(): array;
+
+    /**
+     * @return object[]
+     */
+    abstract protected function createEntityCollection(): array;
+
+    public function testFind()
+    {
+        $this->assertNull($this->repository->find(0));
+
+        $entity = $this->createSingleEntity();
+        self::assertInstanceOf(EntityInterface::class, $entity);
+
+        $this->entityManager->persist($entity);
+        $this->entityManager->flush();
+
+        self::assertIsInt($entity->getId());
+        self::assertSame($entity, $this->repository->find($entity->getId()));
+    }
+
+    public function testFindAll()
+    {
+        $this->assertSame([], $this->repository->findAll());
+
+        $entities = $this->createEntityCollection();
+        foreach ($entities as $entity) {
+            $this->entityManager->persist($entity);
+            $this->entityManager->flush();
+        }
+
+        self::assertSame($entities, $this->repository->findAll());
+    }
+
+    /**
+     * @dataProvider findOneByDataProvider
+     *
+     * @param mixed[] $criteria
+     * @param mixed[] $orderBy
+     * @param int|null $expectedEntityIndex
+     */
+    public function testFindOneBy(array $criteria, ?array $orderBy, ?int $expectedEntityIndex)
+    {
+        $entities = $this->createEntityCollection();
+        foreach ($entities as $entity) {
+            $this->entityManager->persist($entity);
+            $this->entityManager->flush();
+        }
+
+        $entity = $this->repository->findOneBy($criteria, $orderBy);
+
+        if (null === $expectedEntityIndex) {
+            self::assertNull($entity);
+        } else {
+            self::assertSame($entities[$expectedEntityIndex], $entity);
+        }
+    }
+
+    /**
+     * @dataProvider countDataProvider
+     *
+     * @param mixed[] $criteria
+     * @param int $expectedCount
+     */
+    public function testCount(array $criteria, int $expectedCount)
+    {
+        $entities = $this->createEntityCollection();
+        foreach ($entities as $entity) {
+            $this->entityManager->persist($entity);
+            $this->entityManager->flush();
+        }
+
+        self::assertSame($expectedCount, $this->repository->count($criteria));
+    }
+}

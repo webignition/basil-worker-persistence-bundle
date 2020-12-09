@@ -9,9 +9,9 @@ use Doctrine\Persistence\ObjectRepository;
 
 /**
  * @template T
- * @implements ObjectRepository<T>
+ * @implements EntityRepositoryInterface<T>
  */
-abstract class AbstractEntityRepository implements ObjectRepository
+abstract class AbstractEntityRepository implements EntityRepositoryInterface
 {
     private EntityManagerInterface $entityManager;
 
@@ -26,6 +26,7 @@ abstract class AbstractEntityRepository implements ObjectRepository
      */
     public function __construct(EntityManagerInterface $entityManager, string $className)
     {
+        $this->entityManager = $entityManager;
         $this->repository = $entityManager->getRepository($className);
     }
 

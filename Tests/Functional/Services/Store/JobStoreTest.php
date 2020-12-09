@@ -5,8 +5,8 @@ declare(strict_types=1);
 namespace webignition\BasilWorker\PersistenceBundle\Tests\Functional\Services\Store;
 
 use webignition\BasilWorker\PersistenceBundle\Entity\Job;
-use webignition\BasilWorker\PersistenceBundle\Services\Store\JobStore;
 use webignition\BasilWorker\PersistenceBundle\Services\Persister\JobPersister;
+use webignition\BasilWorker\PersistenceBundle\Services\Store\JobStore;
 use webignition\BasilWorker\PersistenceBundle\Tests\Functional\AbstractFunctionalTest;
 
 class JobStoreTest extends AbstractFunctionalTest

@@ -10,16 +10,16 @@ use webignition\BasilWorker\PersistenceBundle\Tests\Functional\AbstractFunctiona
 
 class JobFactoryTest extends AbstractFunctionalTest
 {
-    private JobFactory $jobFactory;
+    private JobFactory $factory;
 
     protected function setUp(): void
     {
         parent::setUp();
 
-        $jobFactory = $this->container->get(JobFactory::class);
-        self::assertInstanceOf(JobFactory::class, $jobFactory);
-        if ($jobFactory instanceof JobFactory) {
-            $this->jobFactory = $jobFactory;
+        $factory = $this->container->get(JobFactory::class);
+        self::assertInstanceOf(JobFactory::class, $factory);
+        if ($factory instanceof JobFactory) {
+            $this->factory = $factory;
         }
     }
 
@@ -29,7 +29,7 @@ class JobFactoryTest extends AbstractFunctionalTest
         $callbackUrl = 'http://example.com';
         $maximumDurationInSeconds = 600;
 
-        $job = $this->jobFactory->create($label, $callbackUrl, $maximumDurationInSeconds);
+        $job = $this->factory->create($label, $callbackUrl, $maximumDurationInSeconds);
 
         self::assertSame(Job::ID, $job->getId());
         self::assertSame($label, $job->getLabel());

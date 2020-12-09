@@ -11,17 +11,17 @@ use webignition\BasilWorker\PersistenceBundle\Tests\Functional\AbstractFunctiona
 
 class JobStoreTest extends AbstractFunctionalTest
 {
-    private JobStore $jobStore;
+    private JobStore $store;
     private EntityPersister $persister;
 
     protected function setUp(): void
     {
         parent::setUp();
 
-        $jobStore = $this->container->get(JobStore::class);
-        self::assertInstanceOf(JobStore::class, $jobStore);
-        if ($jobStore instanceof JobStore) {
-            $this->jobStore = $jobStore;
+        $store = $this->container->get(JobStore::class);
+        self::assertInstanceOf(JobStore::class, $store);
+        if ($store instanceof JobStore) {
+            $this->store = $store;
         }
 
         $persister = $this->container->get(EntityPersister::class);
@@ -33,10 +33,10 @@ class JobStoreTest extends AbstractFunctionalTest
 
     public function testHas()
     {
-        self::assertFalse($this->jobStore->has());
+        self::assertFalse($this->store->has());
 
         $this->persister->persist(Job::create('label content', 'http://example.com/callback', 600));
-        self::assertTrue($this->jobStore->has());
+        self::assertTrue($this->store->has());
     }
 
     public function testGet()
@@ -44,6 +44,6 @@ class JobStoreTest extends AbstractFunctionalTest
         $job = Job::create('label content', 'http://example.com/callback', 600);
         $this->persister->persist($job);
 
-        self::assertSame($this->jobStore->get(), $job);
+        self::assertSame($this->store->get(), $job);
     }
 }

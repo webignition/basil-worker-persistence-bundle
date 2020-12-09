@@ -11,23 +11,23 @@ use webignition\BasilWorker\PersistenceBundle\Tests\Functional\AbstractFunctiona
 
 class CallbackStoreTest extends AbstractFunctionalTest
 {
-    private CallbackStore $callbackStore;
-    private CallbackFactory $callbackFactory;
+    private CallbackStore $store;
+    private CallbackFactory $factory;
 
     protected function setUp(): void
     {
         parent::setUp();
 
-        $callbackStore = $this->container->get(CallbackStore::class);
-        self::assertInstanceOf(CallbackStore::class, $callbackStore);
-        if ($callbackStore instanceof CallbackStore) {
-            $this->callbackStore = $callbackStore;
+        $store = $this->container->get(CallbackStore::class);
+        self::assertInstanceOf(CallbackStore::class, $store);
+        if ($store instanceof CallbackStore) {
+            $this->store = $store;
         }
 
-        $callbackFactory = $this->container->get(CallbackFactory::class);
-        self::assertInstanceOf(CallbackFactory::class, $callbackFactory);
-        if ($callbackFactory instanceof CallbackFactory) {
-            $this->callbackFactory = $callbackFactory;
+        $factory = $this->container->get(CallbackFactory::class);
+        self::assertInstanceOf(CallbackFactory::class, $factory);
+        if ($factory instanceof CallbackFactory) {
+            $this->factory = $factory;
         }
     }
 
@@ -41,7 +41,7 @@ class CallbackStoreTest extends AbstractFunctionalTest
     {
         $this->createCallbacksWithStates($callbackStates);
 
-        self::assertSame($expectedFinishedCount, $this->callbackStore->getFinishedCount());
+        self::assertSame($expectedFinishedCount, $this->store->getFinishedCount());
     }
 
     public function getFinishedCountDataProvider(): array
@@ -103,7 +103,7 @@ class CallbackStoreTest extends AbstractFunctionalTest
     {
         $this->createCallbacksWithTypes($callbackTypes);
 
-        self::assertSame($expectedCompileFailureTypeCount, $this->callbackStore->getCompileFailureTypeCount());
+        self::assertSame($expectedCompileFailureTypeCount, $this->store->getCompileFailureTypeCount());
     }
 
     public function getCompileFailureTypeCountDataProvider(): array
@@ -159,7 +159,7 @@ class CallbackStoreTest extends AbstractFunctionalTest
     private function createCallbacksWithStates(array $states): void
     {
         foreach ($states as $state) {
-            $callback = $this->callbackFactory->create(CallbackInterface::TYPE_COMPILE_FAILURE, []);
+            $callback = $this->factory->create(CallbackInterface::TYPE_COMPILE_FAILURE, []);
             $callback->setState($state);
 
             $this->entityManager->persist($callback);
@@ -173,7 +173,7 @@ class CallbackStoreTest extends AbstractFunctionalTest
     private function createCallbacksWithTypes(array $types): void
     {
         foreach ($types as $type) {
-            $this->callbackFactory->create($type, []);
+            $this->factory->create($type, []);
         }
     }
 }

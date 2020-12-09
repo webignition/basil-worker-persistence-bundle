@@ -17,7 +17,7 @@ abstract class AbstractEntityRepositoryTest extends AbstractFunctionalTest
     /**
      * @var EntityRepositoryInterface<T>
      */
-    private EntityRepositoryInterface $repository;
+    protected EntityRepositoryInterface $repository;
 
     protected function setUp(): void
     {
@@ -33,12 +33,12 @@ abstract class AbstractEntityRepositoryTest extends AbstractFunctionalTest
      * @return EntityRepositoryInterface<T>
      */
     abstract protected function getRepository(): ?EntityRepositoryInterface;
-    abstract protected function createSingleEntity(): object;
+    abstract protected function createSingleEntity(): EntityInterface;
     abstract protected function findOneByDataProvider(): array;
     abstract protected function countDataProvider(): array;
 
     /**
-     * @return object[]
+     * @return EntityInterface[]
      */
     abstract protected function createEntityCollection(): array;
 
@@ -49,8 +49,7 @@ abstract class AbstractEntityRepositoryTest extends AbstractFunctionalTest
         $entity = $this->createSingleEntity();
         self::assertInstanceOf(EntityInterface::class, $entity);
 
-        $this->entityManager->persist($entity);
-        $this->entityManager->flush();
+        $this->persistEntity($entity);
 
         self::assertIsInt($entity->getId());
         self::assertSame($entity, $this->repository->find($entity->getId()));
@@ -62,8 +61,7 @@ abstract class AbstractEntityRepositoryTest extends AbstractFunctionalTest
 
         $entities = $this->createEntityCollection();
         foreach ($entities as $entity) {
-            $this->entityManager->persist($entity);
-            $this->entityManager->flush();
+            $this->persistEntity($entity);
         }
 
         self::assertSame($entities, $this->repository->findAll());
@@ -80,8 +78,7 @@ abstract class AbstractEntityRepositoryTest extends AbstractFunctionalTest
     {
         $entities = $this->createEntityCollection();
         foreach ($entities as $entity) {
-            $this->entityManager->persist($entity);
-            $this->entityManager->flush();
+            $this->persistEntity($entity);
         }
 
         $entity = $this->repository->findOneBy($criteria, $orderBy);
@@ -103,8 +100,7 @@ abstract class AbstractEntityRepositoryTest extends AbstractFunctionalTest
     {
         $entities = $this->createEntityCollection();
         foreach ($entities as $entity) {
-            $this->entityManager->persist($entity);
-            $this->entityManager->flush();
+            $this->persistEntity($entity);
         }
 
         self::assertSame($expectedCount, $this->repository->count($criteria));
@@ -116,5 +112,11 @@ abstract class AbstractEntityRepositoryTest extends AbstractFunctionalTest
 
         self::assertInstanceOf(QueryBuilder::class, $queryBuilder);
         self::assertSame($this->entityManager, $queryBuilder->getEntityManager());
+    }
+
+    protected function persistEntity(EntityInterface $entity): void
+    {
+        $this->entityManager->persist($entity);
+        $this->entityManager->flush();
     }
 }

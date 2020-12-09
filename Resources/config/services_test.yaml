@@ -14,3 +14,5 @@ services:
         - 'webignition\BasilWorker\PersistenceBundle\Entity\Callback\CallbackEntity'
         - 'webignition\BasilWorker\PersistenceBundle\Entity\Job'
         - 'webignition\BasilWorker\PersistenceBundle\Entity\Source'
+        - 'webignition\BasilWorker\PersistenceBundle\Entity\Test'
+        - 'webignition\BasilWorker\PersistenceBundle\Entity\TestConfiguration'

@@ -10,16 +10,16 @@ use webignition\BasilWorker\PersistenceBundle\Tests\Functional\AbstractFunctiona
 
 class SourceFactoryTest extends AbstractFunctionalTest
 {
-    private SourceFactory $sourceFactory;
+    private SourceFactory $factory;
 
     protected function setUp(): void
     {
         parent::setUp();
 
-        $sourceFactory = $this->container->get(SourceFactory::class);
-        self::assertInstanceOf(SourceFactory::class, $sourceFactory);
-        if ($sourceFactory instanceof SourceFactory) {
-            $this->sourceFactory = $sourceFactory;
+        $factory = $this->container->get(SourceFactory::class);
+        self::assertInstanceOf(SourceFactory::class, $factory);
+        if ($factory instanceof SourceFactory) {
+            $this->factory = $factory;
         }
     }
 
@@ -27,7 +27,7 @@ class SourceFactoryTest extends AbstractFunctionalTest
     {
         $type = Source::TYPE_TEST;
         $path = 'Test/test.yml';
-        $source = $this->sourceFactory->create($type, $path);
+        $source = $this->factory->create($type, $path);
 
         self::assertNotNull($source->getId());
         self::assertSame($type, $source->getType());

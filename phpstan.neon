@@ -1,6 +1,9 @@
 parameters:
   level: 8
   paths:
+    - DependencyInjection
+    - Entity
+    - Services
     - Tests
   inferPrivatePropertyTypeFromConstructor: true
   ignoreErrors:

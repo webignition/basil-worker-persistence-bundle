@@ -32,14 +32,6 @@ class JobStore
         return $this->job;
     }
 
-    public function store(Job $job): Job
-    {
-        $this->entityManager->persist($job);
-        $this->entityManager->flush();
-
-        return $job;
-    }
-
     private function fetch(): ?Job
     {
         $job = $this->entityManager->find(Job::class, Job::ID);

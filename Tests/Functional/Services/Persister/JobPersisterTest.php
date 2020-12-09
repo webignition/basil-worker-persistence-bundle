@@ -2,48 +2,41 @@
 
 declare(strict_types=1);
 
-namespace webignition\BasilWorker\PersistenceBundle\Tests\Functional\Services;
+namespace webignition\BasilWorker\PersistenceBundle\Tests\Functional\Services\Persister;
 
 use webignition\BasilWorker\PersistenceBundle\Entity\Job;
 use webignition\BasilWorker\PersistenceBundle\Services\JobStore;
 use webignition\BasilWorker\PersistenceBundle\Services\Persister\JobPersister;
 use webignition\BasilWorker\PersistenceBundle\Tests\Functional\AbstractFunctionalTest;
 
-class JobStoreTest extends AbstractFunctionalTest
+class JobPersisterTest extends AbstractFunctionalTest
 {
-    private JobStore $jobStore;
     private JobPersister $jobPersister;
+    private JobStore $jobStore;
 
     protected function setUp(): void
     {
         parent::setUp();
-
-        $jobStore = $this->container->get(JobStore::class);
-        self::assertInstanceOf(JobStore::class, $jobStore);
-        if ($jobStore instanceof JobStore) {
-            $this->jobStore = $jobStore;
-        }
 
         $jobPersister = $this->container->get(JobPersister::class);
         self::assertInstanceOf(JobPersister::class, $jobPersister);
         if ($jobPersister instanceof JobPersister) {
             $this->jobPersister = $jobPersister;
         }
+
+        $jobStore = $this->container->get(JobStore::class);
+        self::assertInstanceOf(JobStore::class, $jobStore);
+        if ($jobStore instanceof JobStore) {
+            $this->jobStore = $jobStore;
+        }
     }
 
-    public function testHas()
-    {
-        self::assertFalse($this->jobStore->has());
-
-        $this->jobPersister->persist(Job::create('label content', 'http://example.com/callback', 600));
-        self::assertTrue($this->jobStore->has());
-    }
-
-    public function testGet()
+    public function testPersist()
     {
         $job = Job::create('label content', 'http://example.com/callback', 600);
-        $this->jobPersister->persist($job);
 
-        self::assertSame($this->jobStore->get(), $job);
+        $this->assertFalse($this->jobStore->has());
+        $this->jobPersister->persist($job);
+        $this->assertTrue($this->jobStore->has());
     }
 }

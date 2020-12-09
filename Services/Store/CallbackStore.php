@@ -11,6 +11,9 @@ use webignition\BasilWorker\PersistenceBundle\Entity\Callback\CallbackInterface;
 
 class CallbackStore
 {
+    /**
+     * @var ObjectRepository<CallbackEntity>
+     */
     private ObjectRepository $repository;
 
     public function __construct(EntityManagerInterface $entityManager)

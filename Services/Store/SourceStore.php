@@ -12,16 +12,25 @@ use webignition\BasilWorker\PersistenceBundle\Entity\Source;
 
 class SourceStore
 {
+    private EntityManagerInterface $entityManager;
+
+    /**
+     * @var ObjectRepository<Source>
+     */
     private ObjectRepository $repository;
 
     public function __construct(EntityManagerInterface $entityManager)
     {
+        $this->entityManager = $entityManager;
         $this->repository = $entityManager->getRepository(Source::class);
     }
 
     public function hasAny(): bool
     {
-        $queryBuilder = $this->repository->createQueryBuilder('Source');
+        $queryBuilder = $this->entityManager->createQueryBuilder()
+            ->select('Source')
+            ->from(Source::class, 'Source', null);
+
         $queryBuilder
             ->select('COUNT(Source.id)')
             ->setMaxResults(1);
@@ -43,7 +52,10 @@ class SourceStore
      */
     public function findAllPaths(): array
     {
-        $queryBuilder = $this->repository->createQueryBuilder('Source');
+        $queryBuilder = $this->entityManager->createQueryBuilder()
+            ->select('Source')
+            ->from(Source::class, 'Source', null);
+
         $queryBuilder
             ->select('Source.path');
 

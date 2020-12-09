@@ -11,33 +11,33 @@ use webignition\BasilWorker\PersistenceBundle\Tests\Functional\AbstractFunctiona
 
 class SourceStoreTest extends AbstractFunctionalTest
 {
-    private SourceStore $sourceStore;
-    private SourceFactory $sourceFactory;
+    private SourceStore $store;
+    private SourceFactory $factory;
 
     protected function setUp(): void
     {
         parent::setUp();
 
-        $sourceStore = $this->container->get(SourceStore::class);
-        self::assertInstanceOf(SourceStore::class, $sourceStore);
-        if ($sourceStore instanceof SourceStore) {
-            $this->sourceStore = $sourceStore;
+        $store = $this->container->get(SourceStore::class);
+        self::assertInstanceOf(SourceStore::class, $store);
+        if ($store instanceof SourceStore) {
+            $this->store = $store;
         }
 
-        $sourceFactory = $this->container->get(SourceFactory::class);
-        self::assertInstanceOf(SourceFactory::class, $sourceFactory);
-        if ($sourceFactory instanceof SourceFactory) {
-            $this->sourceFactory = $sourceFactory;
+        $factory = $this->container->get(SourceFactory::class);
+        self::assertInstanceOf(SourceFactory::class, $factory);
+        if ($factory instanceof SourceFactory) {
+            $this->factory = $factory;
         }
     }
 
     public function testHasAny()
     {
-        self::assertFalse($this->sourceStore->hasAny());
+        self::assertFalse($this->store->hasAny());
 
-        $this->sourceFactory->create(Source::TYPE_TEST, 'Test/test.yml');
+        $this->factory->create(Source::TYPE_TEST, 'Test/test.yml');
 
-        self::assertTrue($this->sourceStore->hasAny());
+        self::assertTrue($this->store->hasAny());
     }
 
     /**
@@ -55,7 +55,7 @@ class SourceStoreTest extends AbstractFunctionalTest
             }
         }
 
-        self::assertSame($expectedPaths, $this->sourceStore->findAllPaths());
+        self::assertSame($expectedPaths, $this->store->findAllPaths());
     }
 
     public function findAllPathsDataProvider(): array

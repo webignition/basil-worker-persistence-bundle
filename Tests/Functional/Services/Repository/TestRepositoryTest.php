@@ -141,4 +141,91 @@ class TestRepositoryTest extends AbstractEntityRepositoryTest
             ],
         ];
     }
+
+    /**
+     * @dataProvider findMaxPositionDataProvider
+     *
+     * @param Test[] $tests
+     */
+    public function testFindMaxPosition(array $tests, ?int $expectedMaxPosition)
+    {
+        foreach ($tests as $test) {
+            $this->persistEntity($test);
+        }
+
+        self::assertInstanceOf(TestRepository::class, $this->repository);
+        if ($this->repository instanceof TestRepository) {
+            self::assertSame($expectedMaxPosition, $this->repository->findMaxPosition());
+        }
+    }
+
+    public function findMaxPositionDataProvider(): array
+    {
+        $tests = [
+            'position1' => Test::create(
+                TestConfiguration::create('chrome', 'http://example.com/1'),
+                '',
+                '',
+                1,
+                1
+            ),
+            'position2' => Test::create(
+                TestConfiguration::create('chrome', 'http://example.com/2'),
+                '',
+                '',
+                1,
+                2
+            ),
+            'position3' => Test::create(
+                TestConfiguration::create('chrome', 'http://example.com/3'),
+                '',
+                '',
+                1,
+                3
+            ),
+        ];
+
+        return [
+            'empty' => [
+                'tests' => [],
+                'expectedMaxPosition' => null,
+            ],
+            'one test, position 1' => [
+                'tests' => [
+                    $tests['position1'],
+                ],
+                'expectedMaxPosition' => 1,
+            ],
+            'one test, position 3' => [
+                'tests' => [
+                    $tests['position3'],
+                ],
+                'expectedMaxPosition' => 3,
+            ],
+            'three tests, position 1, 2, 3' => [
+                'tests' => [
+                    $tests['position1'],
+                    $tests['position2'],
+                    $tests['position3'],
+                ],
+                'expectedMaxPosition' => 3,
+            ],
+            'three tests, position 3, 2, 1' => [
+                'tests' => [
+                    $tests['position3'],
+                    $tests['position2'],
+                    $tests['position1'],
+                ],
+                'expectedMaxPosition' => 3,
+            ],
+            'three tests, position 1, 3, 2' => [
+                'tests' => [
+                    $tests['position1'],
+                    $tests['position3'],
+                    $tests['position2'],
+                ],
+                'expectedMaxPosition' => 3,
+            ],
+        ];
+    }
 }

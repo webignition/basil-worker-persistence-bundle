@@ -9,7 +9,7 @@ use Doctrine\ORM\Mapping as ORM;
 /**
  * @ORM\Entity
  */
-class Test implements \JsonSerializable
+class Test implements \JsonSerializable, EntityInterface
 {
     public const STATE_AWAITING = 'awaiting';
     public const STATE_RUNNING = 'running';

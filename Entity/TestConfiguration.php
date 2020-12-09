@@ -21,7 +21,7 @@ use Doctrine\ORM\Mapping as ORM;
  *     }
  * )
  */
-class TestConfiguration implements \JsonSerializable
+class TestConfiguration implements \JsonSerializable, EntityInterface
 {
     /**
      * @ORM\Id

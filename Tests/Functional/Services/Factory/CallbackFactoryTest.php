@@ -10,16 +10,16 @@ use webignition\BasilWorker\PersistenceBundle\Tests\Functional\AbstractFunctiona
 
 class CallbackFactoryTest extends AbstractFunctionalTest
 {
-    private CallbackFactory $callbackFactory;
+    private CallbackFactory $factory;
 
     protected function setUp(): void
     {
         parent::setUp();
 
-        $callbackFactory = $this->container->get(CallbackFactory::class);
-        self::assertInstanceOf(CallbackFactory::class, $callbackFactory);
-        if ($callbackFactory instanceof CallbackFactory) {
-            $this->callbackFactory = $callbackFactory;
+        $factory = $this->container->get(CallbackFactory::class);
+        self::assertInstanceOf(CallbackFactory::class, $factory);
+        if ($factory instanceof CallbackFactory) {
+            $this->factory = $factory;
         }
     }
 
@@ -34,7 +34,7 @@ class CallbackFactoryTest extends AbstractFunctionalTest
             ],
         ];
 
-        $callback = $this->callbackFactory->create($type, $payload);
+        $callback = $this->factory->create($type, $payload);
 
         self::assertNotNull($callback->getId());
         self::assertSame($type, $callback->getType());

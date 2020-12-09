@@ -261,15 +261,13 @@ class TestRepositoryTest extends AbstractEntityRepositoryTest
                 TestConfiguration::create('chrome', 'http://example.com/awaiting1'),
                 '',
                 '',
-                1,
-                Test::STATE_AWAITING
+                1
             ),
             'awaiting2' => $this->createTest(
                 TestConfiguration::create('chrome', 'http://example.com/awaiting2'),
                 '',
                 '',
-                2,
-                Test::STATE_AWAITING
+                2
             ),
             'running' => $this->createTest(
                 TestConfiguration::create('chrome', 'http://example.com/running'),
@@ -332,6 +330,88 @@ class TestRepositoryTest extends AbstractEntityRepositoryTest
                     $tests['complete'],
                 ],
                 'expectedNextAwaiting' => null,
+            ],
+        ];
+    }
+
+    /**
+     * @dataProvider findAllAwaitingDataProvider
+     *
+     * @param Test[] $tests
+     * @param Test[] $expectedAwaitingTests
+     */
+    public function testFindAllAwaiting(array $tests, array $expectedAwaitingTests)
+    {
+        foreach ($tests as $test) {
+            $this->persistEntity($test);
+        }
+
+        self::assertInstanceOf(TestRepository::class, $this->repository);
+        if ($this->repository instanceof TestRepository) {
+            self::assertSame($expectedAwaitingTests, $this->repository->findAllAwaiting());
+        }
+    }
+
+    public function findAllAwaitingDataProvider(): array
+    {
+        $tests = [
+            'awaiting1' => $this->createTest(
+                TestConfiguration::create('chrome', 'http://example.com/awaiting1'),
+                '',
+                '',
+                1
+            ),
+            'awaiting2' => $this->createTest(
+                TestConfiguration::create('chrome', 'http://example.com/awaiting2'),
+                '',
+                '',
+                2
+            ),
+            'running' => $this->createTest(
+                TestConfiguration::create('chrome', 'http://example.com/running'),
+                '',
+                '',
+                3,
+                Test::STATE_FAILED
+            ),
+        ];
+
+        return [
+            'empty' => [
+                'tests' => [],
+                'expectedAwaitingTests' => [],
+            ],
+            'awaiting1' => [
+                'tests' => [
+                    $tests['awaiting1'],
+                ],
+                'expectedAwaitingTests' => [
+                    $tests['awaiting1'],
+                ],
+            ],
+            'awaiting2' => [
+                'tests' => [
+                    $tests['awaiting2'],
+                ],
+                'expectedAwaitingTests' => [
+                    $tests['awaiting2'],
+                ],
+            ],
+            'awaiting1, awaiting2' => [
+                'tests' => [
+                    $tests['awaiting1'],
+                    $tests['awaiting2'],
+                ],
+                'expectedAwaitingTests' => [
+                    $tests['awaiting1'],
+                    $tests['awaiting2'],
+                ],
+            ],
+            'running' => [
+                'tests' => [
+                    $tests['running'],
+                ],
+                'expectedAwaitingTests' => [],
             ],
         ];
     }

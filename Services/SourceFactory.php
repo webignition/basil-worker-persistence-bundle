@@ -4,16 +4,16 @@ declare(strict_types=1);
 
 namespace webignition\BasilWorker\PersistenceBundle\Services;
 
-use Doctrine\ORM\EntityManagerInterface;
 use webignition\BasilWorker\PersistenceBundle\Entity\Source;
+use webignition\BasilWorker\PersistenceBundle\Services\Persister\SourcePersister;
 
 class SourceFactory
 {
-    private EntityManagerInterface $entityManager;
+    private SourcePersister $sourcePersister;
 
-    public function __construct(EntityManagerInterface $entityManager)
+    public function __construct(SourcePersister $sourcePersister)
     {
-        $this->entityManager = $entityManager;
+        $this->sourcePersister = $sourcePersister;
     }
 
     /**
@@ -21,11 +21,6 @@ class SourceFactory
      */
     public function create(string $type, string $path): Source
     {
-        $source = Source::create($type, $path);
-
-        $this->entityManager->persist($source);
-        $this->entityManager->flush();
-
-        return $source;
+        return $this->sourcePersister->persist(Source::create($type, $path));
     }
 }

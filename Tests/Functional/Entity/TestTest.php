@@ -10,7 +10,7 @@ use webignition\BasilWorker\PersistenceBundle\Tests\Functional\AbstractFunctiona
 
 class TestTest extends AbstractFunctionalTest
 {
-    public function testEntityMapping()
+    public function testEntityMapping(): void
     {
         $repository = $this->entityManager->getRepository(Test::class);
         self::assertCount(0, $repository->findAll());

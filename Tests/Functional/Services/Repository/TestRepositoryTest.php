@@ -147,7 +147,7 @@ class TestRepositoryTest extends AbstractEntityRepositoryTest
      *
      * @param Test[] $tests
      */
-    public function testFindMaxPosition(array $tests, ?int $expectedMaxPosition)
+    public function testFindMaxPosition(array $tests, ?int $expectedMaxPosition): void
     {
         foreach ($tests as $test) {
             $this->persistEntity($test);
@@ -159,6 +159,9 @@ class TestRepositoryTest extends AbstractEntityRepositoryTest
         }
     }
 
+    /**
+     * @return array[]
+     */
     public function findMaxPositionDataProvider(): array
     {
         $tests = [
@@ -231,7 +234,7 @@ class TestRepositoryTest extends AbstractEntityRepositoryTest
      *
      * @param Test[] $tests
      */
-    public function testFindNextAwaiting(array $tests, ?Test $expectedNextAwaiting)
+    public function testFindNextAwaiting(array $tests, ?Test $expectedNextAwaiting): void
     {
         foreach ($tests as $test) {
             $this->persistEntity($test);
@@ -254,6 +257,9 @@ class TestRepositoryTest extends AbstractEntityRepositoryTest
         }
     }
 
+    /**
+     * @return array[]
+     */
     public function findNextAwaitingDataProvider(): array
     {
         $tests = [
@@ -340,7 +346,7 @@ class TestRepositoryTest extends AbstractEntityRepositoryTest
      * @param Test[] $tests
      * @param Test[] $expectedAwaitingTests
      */
-    public function testFindAllAwaiting(array $tests, array $expectedAwaitingTests)
+    public function testFindAllAwaiting(array $tests, array $expectedAwaitingTests): void
     {
         foreach ($tests as $test) {
             $this->persistEntity($test);
@@ -352,6 +358,9 @@ class TestRepositoryTest extends AbstractEntityRepositoryTest
         }
     }
 
+    /**
+     * @return array[]
+     */
     public function findAllAwaitingDataProvider(): array
     {
         $tests = [

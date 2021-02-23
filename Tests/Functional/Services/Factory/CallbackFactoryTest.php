@@ -23,7 +23,7 @@ class CallbackFactoryTest extends AbstractFunctionalTest
         }
     }
 
-    public function testCreate()
+    public function testCreate(): void
     {
         $type = CallbackInterface::TYPE_COMPILE_FAILURE;
         $payload = [

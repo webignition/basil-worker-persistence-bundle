@@ -23,7 +23,7 @@ class SourceFactoryTest extends AbstractFunctionalTest
         }
     }
 
-    public function testCreate()
+    public function testCreate(): void
     {
         $type = Source::TYPE_TEST;
         $path = 'Test/test.yml';

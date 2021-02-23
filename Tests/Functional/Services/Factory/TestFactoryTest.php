@@ -31,7 +31,7 @@ class TestFactoryTest extends AbstractFunctionalTest
         }
     }
 
-    public function testCreate()
+    public function testCreate(): void
     {
         $this->assertSame(0, $this->repository->count([]));
 

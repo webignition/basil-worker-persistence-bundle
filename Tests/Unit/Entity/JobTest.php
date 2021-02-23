@@ -12,7 +12,7 @@ class JobTest extends TestCase
 {
     private const SECONDS_PER_MINUTE = 60;
 
-    public function testCreate()
+    public function testCreate(): void
     {
         $label = md5('label source');
         $callbackUrl = 'http://example.com/callback';
@@ -28,14 +28,16 @@ class JobTest extends TestCase
     /**
      * @dataProvider jsonSerializeDataProvider
      *
-     * @param Job $job
      * @param array<mixed> $expectedSerializedJob
      */
-    public function testJsonSerialize(Job $job, array $expectedSerializedJob)
+    public function testJsonSerialize(Job $job, array $expectedSerializedJob): void
     {
         self::assertSame($expectedSerializedJob, $job->jsonSerialize());
     }
 
+    /**
+     * @return array[]
+     */
     public function jsonSerializeDataProvider(): array
     {
         return [
@@ -53,11 +55,14 @@ class JobTest extends TestCase
     /**
      * @dataProvider hasReachedMaximumDurationDataProvider
      */
-    public function testHasReachedMaximumDuration(Job $job, bool $hasReachedMaximumDuration)
+    public function testHasReachedMaximumDuration(Job $job, bool $hasReachedMaximumDuration): void
     {
         self::assertSame($hasReachedMaximumDuration, $job->hasReachedMaximumDuration());
     }
 
+    /**
+     * @return array[]
+     */
     public function hasReachedMaximumDurationDataProvider(): array
     {
         $maximumDuration = 10 * self::SECONDS_PER_MINUTE;

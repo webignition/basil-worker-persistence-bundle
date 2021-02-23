@@ -29,7 +29,7 @@ class CallbackStateMutatorTest extends AbstractFunctionalTest
      * @param CallbackInterface::STATE_* $initialState
      * @param CallbackInterface::STATE_* $expectedState
      */
-    public function testSetQueued(string $initialState, string $expectedState)
+    public function testSetQueued(string $initialState, string $expectedState): void
     {
         foreach ($this->createCallbacks() as $callback) {
             $this->doSetAsStateTest(
@@ -43,6 +43,9 @@ class CallbackStateMutatorTest extends AbstractFunctionalTest
         }
     }
 
+    /**
+     * @return array[]
+     */
     public function setQueuedDataProvider(): array
     {
         return [
@@ -75,7 +78,7 @@ class CallbackStateMutatorTest extends AbstractFunctionalTest
      * @param CallbackInterface::STATE_* $initialState
      * @param CallbackInterface::STATE_* $expectedState
      */
-    public function testSetSending(string $initialState, string $expectedState)
+    public function testSetSending(string $initialState, string $expectedState): void
     {
         foreach ($this->createCallbacks() as $callback) {
             $this->doSetAsStateTest(
@@ -89,6 +92,9 @@ class CallbackStateMutatorTest extends AbstractFunctionalTest
         }
     }
 
+    /**
+     * @return array[]
+     */
     public function setSendingDataProvider(): array
     {
         return [
@@ -121,7 +127,7 @@ class CallbackStateMutatorTest extends AbstractFunctionalTest
      * @param CallbackInterface::STATE_* $initialState
      * @param CallbackInterface::STATE_* $expectedState
      */
-    public function testSetFailed(string $initialState, string $expectedState)
+    public function testSetFailed(string $initialState, string $expectedState): void
     {
         foreach ($this->createCallbacks() as $callback) {
             $this->doSetAsStateTest(
@@ -135,6 +141,9 @@ class CallbackStateMutatorTest extends AbstractFunctionalTest
         }
     }
 
+    /**
+     * @return array[]
+     */
     public function setFailedDataProvider(): array
     {
         return [
@@ -167,7 +176,7 @@ class CallbackStateMutatorTest extends AbstractFunctionalTest
      * @param CallbackInterface::STATE_* $initialState
      * @param CallbackInterface::STATE_* $expectedState
      */
-    public function testSetComplete(string $initialState, string $expectedState)
+    public function testSetComplete(string $initialState, string $expectedState): void
     {
         foreach ($this->createCallbacks() as $callback) {
             $this->doSetAsStateTest(
@@ -181,6 +190,9 @@ class CallbackStateMutatorTest extends AbstractFunctionalTest
         }
     }
 
+    /**
+     * @return array[]
+     */
     public function setCompleteDataProvider(): array
     {
         return [

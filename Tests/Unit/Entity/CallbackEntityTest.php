@@ -10,7 +10,7 @@ use webignition\BasilWorker\PersistenceBundle\Entity\Callback\CallbackInterface;
 
 class CallbackEntityTest extends TestCase
 {
-    public function testIncrementRetryCount()
+    public function testIncrementRetryCount(): void
     {
         $callback = CallbackEntity::create(CallbackInterface::TYPE_COMPILE_FAILURE, []);
         self::assertSame(0, $callback->getRetryCount());

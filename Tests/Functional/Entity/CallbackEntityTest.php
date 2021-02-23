@@ -9,7 +9,7 @@ use webignition\BasilWorker\PersistenceBundle\Tests\Functional\AbstractFunctiona
 
 class CallbackEntityTest extends AbstractFunctionalTest
 {
-    public function testEntityMapping()
+    public function testEntityMapping(): void
     {
         $repository = $this->entityManager->getRepository(CallbackEntity::class);
         self::assertCount(0, $repository->findAll());

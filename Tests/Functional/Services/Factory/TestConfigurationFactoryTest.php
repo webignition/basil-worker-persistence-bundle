@@ -22,7 +22,7 @@ class TestConfigurationFactoryTest extends AbstractFunctionalTest
         }
     }
 
-    public function testCreate()
+    public function testCreate(): void
     {
         $browser = 'chrome';
         $url = 'http://example.com';

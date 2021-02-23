@@ -30,7 +30,7 @@ class EntityPersisterTest extends AbstractFunctionalTest
     /**
      * @dataProvider persistDataProvider
      */
-    public function testPersist(EntityInterface $entity)
+    public function testPersist(EntityInterface $entity): void
     {
         $repository = $this->entityManager->getRepository(get_class($entity));
         self::assertCount(0, $repository->findAll());
@@ -39,6 +39,9 @@ class EntityPersisterTest extends AbstractFunctionalTest
         self::assertCount(1, $repository->findAll());
     }
 
+    /**
+     * @return array[]
+     */
     public function persistDataProvider(): array
     {
         return [

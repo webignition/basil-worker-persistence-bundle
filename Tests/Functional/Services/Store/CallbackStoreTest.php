@@ -35,15 +35,17 @@ class CallbackStoreTest extends AbstractFunctionalTest
      * @dataProvider getFinishedCountDataProvider
      *
      * @param array<CallbackInterface::STATE_*> $callbackStates
-     * @param int $expectedFinishedCount
      */
-    public function testGetFinishedCount(array $callbackStates, int $expectedFinishedCount)
+    public function testGetFinishedCount(array $callbackStates, int $expectedFinishedCount): void
     {
         $this->createCallbacksWithStates($callbackStates);
 
         self::assertSame($expectedFinishedCount, $this->store->getFinishedCount());
     }
 
+    /**
+     * @return array[]
+     */
     public function getFinishedCountDataProvider(): array
     {
         return [
@@ -97,15 +99,17 @@ class CallbackStoreTest extends AbstractFunctionalTest
      * @dataProvider getCompileFailureTypeCountDataProvider
      *
      * @param array<CallbackInterface::TYPE_*> $callbackTypes
-     * @param int $expectedCompileFailureTypeCount
      */
-    public function testGetCompileFailureTypeCount(array $callbackTypes, int $expectedCompileFailureTypeCount)
+    public function testGetCompileFailureTypeCount(array $callbackTypes, int $expectedCompileFailureTypeCount): void
     {
         $this->createCallbacksWithTypes($callbackTypes);
 
         self::assertSame($expectedCompileFailureTypeCount, $this->store->getCompileFailureTypeCount());
     }
 
+    /**
+     * @return array[]
+     */
     public function getCompileFailureTypeCountDataProvider(): array
     {
         return [

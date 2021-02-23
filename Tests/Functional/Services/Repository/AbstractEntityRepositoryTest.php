@@ -34,7 +34,15 @@ abstract class AbstractEntityRepositoryTest extends AbstractFunctionalTest
      */
     abstract protected function getRepository(): ?EntityRepositoryInterface;
     abstract protected function createSingleEntity(): EntityInterface;
+
+    /**
+     * @return array[]
+     */
     abstract protected function findOneByDataProvider(): array;
+
+    /**
+     * @return array[]
+     */
     abstract protected function countDataProvider(): array;
 
     /**
@@ -42,7 +50,7 @@ abstract class AbstractEntityRepositoryTest extends AbstractFunctionalTest
      */
     abstract protected function createEntityCollection(): array;
 
-    public function testFind()
+    public function testFind(): void
     {
         $this->assertNull($this->repository->find(0));
 
@@ -55,7 +63,7 @@ abstract class AbstractEntityRepositoryTest extends AbstractFunctionalTest
         self::assertSame($entity, $this->repository->find($entity->getId()));
     }
 
-    public function testFindAll()
+    public function testFindAll(): void
     {
         $this->assertSame([], $this->repository->findAll());
 
@@ -74,7 +82,7 @@ abstract class AbstractEntityRepositoryTest extends AbstractFunctionalTest
      * @param mixed[] $orderBy
      * @param int|null $expectedEntityIndex
      */
-    public function testFindOneBy(array $criteria, ?array $orderBy, ?int $expectedEntityIndex)
+    public function testFindOneBy(array $criteria, ?array $orderBy, ?int $expectedEntityIndex): void
     {
         $entities = $this->createEntityCollection();
         foreach ($entities as $entity) {
@@ -96,7 +104,7 @@ abstract class AbstractEntityRepositoryTest extends AbstractFunctionalTest
      * @param mixed[] $criteria
      * @param int $expectedCount
      */
-    public function testCount(array $criteria, int $expectedCount)
+    public function testCount(array $criteria, int $expectedCount): void
     {
         $entities = $this->createEntityCollection();
         foreach ($entities as $entity) {
@@ -106,7 +114,7 @@ abstract class AbstractEntityRepositoryTest extends AbstractFunctionalTest
         self::assertSame($expectedCount, $this->repository->count($criteria));
     }
 
-    public function testCreateQueryBuilder()
+    public function testCreateQueryBuilder(): void
     {
         $queryBuilder = $this->repository->createQueryBuilder('Foo');
 

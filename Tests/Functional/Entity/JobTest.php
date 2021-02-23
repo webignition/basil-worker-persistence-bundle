@@ -9,7 +9,7 @@ use webignition\BasilWorker\PersistenceBundle\Tests\Functional\AbstractFunctiona
 
 class JobTest extends AbstractFunctionalTest
 {
-    public function testEntityMapping()
+    public function testEntityMapping(): void
     {
         $repository = $this->entityManager->getRepository(Job::class);
         self::assertCount(0, $repository->findAll());

@@ -23,7 +23,7 @@ class TestConfigurationStoreTest extends AbstractFunctionalTest
         }
     }
 
-    public function testGet()
+    public function testGet(): void
     {
         $configuration = TestConfiguration::create('chrome', 'http://example.com');
         self::assertNull($configuration->getId());

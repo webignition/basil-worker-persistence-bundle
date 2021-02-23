@@ -31,7 +31,7 @@ class SourceStoreTest extends AbstractFunctionalTest
         }
     }
 
-    public function testHasAny()
+    public function testHasAny(): void
     {
         self::assertFalse($this->store->hasAny());
 
@@ -46,7 +46,7 @@ class SourceStoreTest extends AbstractFunctionalTest
      * @param Source[] $sources
      * @param string[] $expectedPaths
      */
-    public function testFindAllPaths(array $sources, array $expectedPaths)
+    public function testFindAllPaths(array $sources, array $expectedPaths): void
     {
         foreach ($sources as $source) {
             if ($source instanceof Source) {
@@ -58,6 +58,9 @@ class SourceStoreTest extends AbstractFunctionalTest
         self::assertSame($expectedPaths, $this->store->findAllPaths());
     }
 
+    /**
+     * @return array[]
+     */
     public function findAllPathsDataProvider(): array
     {
         return [

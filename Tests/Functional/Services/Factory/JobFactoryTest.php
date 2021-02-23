@@ -23,7 +23,7 @@ class JobFactoryTest extends AbstractFunctionalTest
         }
     }
 
-    public function testCreate()
+    public function testCreate(): void
     {
         $label = 'label content';
         $callbackUrl = 'http://example.com';

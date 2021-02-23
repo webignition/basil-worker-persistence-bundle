@@ -31,7 +31,7 @@ class JobStoreTest extends AbstractFunctionalTest
         }
     }
 
-    public function testHas()
+    public function testHas(): void
     {
         self::assertFalse($this->store->has());
 
@@ -39,7 +39,7 @@ class JobStoreTest extends AbstractFunctionalTest
         self::assertTrue($this->store->has());
     }
 
-    public function testGet()
+    public function testGet(): void
     {
         $job = Job::create('label content', 'http://example.com/callback', 600);
         $this->persister->persist($job);

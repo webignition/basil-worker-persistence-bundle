@@ -38,7 +38,11 @@ class PersistenceExtension extends Extension
             return false;
         }
 
-        $kernelProjectDirectory = realpath($container->getParameter('kernel.project_dir'));
+        $kernelProjectDirectory = $container->getParameter('kernel.project_dir');
+        if (!is_string($kernelProjectDirectory)) {
+            $kernelProjectDirectory = '';
+        }
+
         $bundleDirectory = realpath(__DIR__ . '/..');
 
         return $kernelProjectDirectory === $bundleDirectory;

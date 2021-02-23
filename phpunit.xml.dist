@@ -12,6 +12,7 @@
         stopOnError="true"
         stopOnFailure="true"
 >
+  <coverage/>
   <testsuites>
     <testsuite name="Project Test Suite">
       <directory>Tests</directory>

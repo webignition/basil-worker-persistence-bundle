@@ -9,12 +9,10 @@ use webignition\BasilWorker\PersistenceBundle\Entity\Job;
 
 class JobStore
 {
-    private EntityManagerInterface $entityManager;
     private Job $job;
 
-    public function __construct(EntityManagerInterface $entityManager)
+    public function __construct(private EntityManagerInterface $entityManager)
     {
-        $this->entityManager = $entityManager;
     }
 
     public function has(): bool

@@ -8,11 +8,8 @@ use webignition\BasilWorker\PersistenceBundle\Services\Repository\SourceReposito
 
 class SourceStore
 {
-    private SourceRepository $repository;
-
-    public function __construct(SourceRepository $sourceRepository)
+    public function __construct(private SourceRepository $repository)
     {
-        $this->repository = $sourceRepository;
     }
 
     public function hasAny(): bool

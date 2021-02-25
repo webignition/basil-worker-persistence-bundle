@@ -10,13 +10,10 @@ use webignition\BasilWorker\PersistenceBundle\Services\Repository\TestConfigurat
 
 class TestConfigurationStore
 {
-    private TestConfigurationRepository $repository;
-    private TestConfigurationFactory $factory;
-
-    public function __construct(TestConfigurationRepository $repository, TestConfigurationFactory $factory)
-    {
-        $this->repository = $repository;
-        $this->factory = $factory;
+    public function __construct(
+        private TestConfigurationRepository $repository,
+        private TestConfigurationFactory $factory
+    ) {
     }
 
     public function get(TestConfiguration $testConfiguration): TestConfiguration

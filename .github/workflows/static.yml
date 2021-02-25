@@ -25,9 +25,4 @@ jobs:
           php-version: ${{ matrix.php-versions }}
 
       - name: PHPStan
-        uses: docker://oskarstark/phpstan-ga
-        env:
-          REQUIRE_DEV: true
-          CHECK_PLATFORM_REQUIREMENTS: false
-        with:
-          args: analyse --no-progress
+        run: composer static-analysis

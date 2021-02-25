@@ -9,11 +9,8 @@ use webignition\BasilWorker\PersistenceBundle\Entity\EntityInterface;
 
 class EntityPersister
 {
-    private EntityManagerInterface $entityManager;
-
-    public function __construct(EntityManagerInterface $entityManager)
+    public function __construct(private EntityManagerInterface $entityManager)
     {
-        $this->entityManager = $entityManager;
     }
 
     public function persist(EntityInterface $entity): EntityInterface

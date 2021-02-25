@@ -12,18 +12,12 @@ use webignition\BasilWorker\PersistenceBundle\Services\Store\TestConfigurationSt
 
 class TestFactory extends AbstractFactory
 {
-    private TestRepository $repository;
-    private TestConfigurationStore $configurationStore;
-
     public function __construct(
         EntityPersister $persister,
-        TestRepository $repository,
-        TestConfigurationStore $configurationStore
+        private TestRepository $repository,
+        private TestConfigurationStore $configurationStore
     ) {
         parent::__construct($persister);
-
-        $this->repository = $repository;
-        $this->configurationStore = $configurationStore;
     }
 
     public function create(

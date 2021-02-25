@@ -9,11 +9,8 @@ use webignition\BasilWorker\PersistenceBundle\Services\Repository\CallbackReposi
 
 class CallbackStore
 {
-    private CallbackRepository $repository;
-
-    public function __construct(CallbackRepository $repository)
+    public function __construct(private CallbackRepository $repository)
     {
-        $this->repository = $repository;
     }
 
     public function getFinishedCount(): int

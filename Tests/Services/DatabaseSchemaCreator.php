@@ -9,21 +9,12 @@ use Doctrine\ORM\Tools\SchemaTool;
 
 class DatabaseSchemaCreator
 {
-    private EntityManagerInterface $entityManager;
-
-    /**
-     * @var array<class-string>
-     */
-    private array $entityClasses;
-
     /**
      * @param EntityManagerInterface $entityManager
      * @param array<class-string> $entityClasses
      */
-    public function __construct(EntityManagerInterface $entityManager, array $entityClasses)
+    public function __construct(private EntityManagerInterface $entityManager, private array $entityClasses)
     {
-        $this->entityManager = $entityManager;
-        $this->entityClasses = $entityClasses;
     }
 
     public function create(): void

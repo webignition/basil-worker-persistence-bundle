@@ -9,11 +9,8 @@ use webignition\BasilWorker\PersistenceBundle\Services\EntityPersister;
 
 abstract class AbstractFactory
 {
-    private EntityPersister $persister;
-
-    public function __construct(EntityPersister $persister)
+    public function __construct(private EntityPersister $persister)
     {
-        $this->persister = $persister;
     }
 
     protected function persist(EntityInterface $entity): EntityInterface

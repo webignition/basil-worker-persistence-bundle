@@ -154,6 +154,76 @@ class CallbackStoreTest extends AbstractFunctionalTest
                 ],
                 'expectedCompileFailureTypeCount' => 5,
             ],
+            'two compile-failure, one finished-compilation-failed' => [
+                'callbackTypes' => [
+                    CallbackInterface::TYPE_EXECUTE_DOCUMENT_RECEIVED,
+                    CallbackInterface::TYPE_EXECUTE_DOCUMENT_RECEIVED,
+                    CallbackInterface::TYPE_COMPILE_FAILURE,
+                    CallbackInterface::TYPE_COMPILE_FAILURE,
+                    CallbackInterface::TYPE_FINISHED_COMPILATION_FAILED,
+                ],
+                'expectedCompileFailureTypeCount' => 3,
+            ],
+        ];
+    }
+
+    /**
+     * @dataProvider getJobTimeoutTypeCountDataProvider
+     *
+     * @param array<CallbackInterface::TYPE_*> $callbackTypes
+     */
+    public function testGetJobTimeoutTypeCount(array $callbackTypes, int $expectedJobTimeoutTypeCount): void
+    {
+        $this->createCallbacksWithTypes($callbackTypes);
+
+        self::assertSame($expectedJobTimeoutTypeCount, $this->store->getJobTimeoutTypeCount());
+    }
+
+    /**
+     * @return array[]
+     */
+    public function getJobTimeoutTypeCountDataProvider(): array
+    {
+        return [
+            'no callbacks' => [
+                'callbackTypes' => [],
+                'expectedJobTimeoutTypeCount' => 0,
+            ],
+            'no job-timeout' => [
+                'callbackTypes' => [
+                    CallbackInterface::TYPE_EXECUTE_DOCUMENT_RECEIVED,
+                    CallbackInterface::TYPE_EXECUTE_DOCUMENT_RECEIVED,
+                    CallbackInterface::TYPE_EXECUTE_DOCUMENT_RECEIVED,
+                ],
+                'expectedJobTimeoutTypeCount' => 0,
+            ],
+            'one job-timeout' => [
+                'callbackTypes' => [
+                    CallbackInterface::TYPE_EXECUTE_DOCUMENT_RECEIVED,
+                    CallbackInterface::TYPE_EXECUTE_DOCUMENT_RECEIVED,
+                    CallbackInterface::TYPE_JOB_TIMEOUT,
+                ],
+                'expectedJobTimeoutTypeCount' => 1,
+            ],
+            'two job-timeout' => [
+                'callbackTypes' => [
+                    CallbackInterface::TYPE_EXECUTE_DOCUMENT_RECEIVED,
+                    CallbackInterface::TYPE_EXECUTE_DOCUMENT_RECEIVED,
+                    CallbackInterface::TYPE_JOB_TIMEOUT,
+                    CallbackInterface::TYPE_JOB_TIMEOUT,
+                ],
+                'expectedJobTimeoutTypeCount' => 2,
+            ],
+            'two job-timeout, one finished-job-timeout' => [
+                'callbackTypes' => [
+                    CallbackInterface::TYPE_EXECUTE_DOCUMENT_RECEIVED,
+                    CallbackInterface::TYPE_EXECUTE_DOCUMENT_RECEIVED,
+                    CallbackInterface::TYPE_JOB_TIMEOUT,
+                    CallbackInterface::TYPE_JOB_TIMEOUT,
+                    CallbackInterface::TYPE_FINISHED_JOB_TIMEOUT,
+                ],
+                'expectedJobTimeoutTypeCount' => 3,
+            ],
         ];
     }
 

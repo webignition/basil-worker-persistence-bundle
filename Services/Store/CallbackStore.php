@@ -28,6 +28,7 @@ class CallbackStore
         return $this->repository->count([
             'type' => [
                 CallbackInterface::TYPE_COMPILE_FAILURE,
+                CallbackInterface::TYPE_FINISHED_COMPILATION_FAILED,
             ],
         ]);
     }
@@ -37,6 +38,7 @@ class CallbackStore
         return $this->repository->count([
             'type' => [
                 CallbackInterface::TYPE_JOB_TIMEOUT,
+                CallbackInterface::TYPE_FINISHED_JOB_TIMEOUT,
             ],
         ]);
     }

@@ -20,6 +20,15 @@ interface CallbackInterface extends EntityInterface
     public const TYPE_JOB_TIMEOUT = 'job-timeout';
     public const TYPE_JOB_COMPLETE = 'job-complete';
 
+    public const TYPE_FINISHED_COMPILATION_FAILED = 'finished-compilation-failed';
+    public const TYPE_FINISHED_JOB_TIMEOUT = 'finished-job-timeout';
+    public const TYPE_FINISHED_JOB_COMPLETE = 'finished-job-complete';
+    public const TYPE_FINISHED_TEST_FAILURE = 'finished-test-failed';
+    public const TYPE_TEST_PROGRESS_STARTED = 'test-progress-started';
+    public const TYPE_TEST_PROGRESS_FINISHED = 'test-progress-finished';
+    public const TYPE_STEP_PASSED = 'step-passed';
+    public const TYPE_STEP_FAILED = 'step-failed';
+
     public function getEntity(): CallbackEntity;
 
     /**

@@ -39,6 +39,7 @@ class CallbackStore
             'type' => [
                 CallbackInterface::TYPE_JOB_TIMEOUT,
                 CallbackInterface::TYPE_FINISHED_JOB_TIMEOUT,
+                CallbackInterface::TYPE_JOB_TIME_OUT,
             ],
         ]);
     }

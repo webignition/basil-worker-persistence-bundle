@@ -119,48 +119,48 @@ class CallbackStoreTest extends AbstractFunctionalTest
             ],
             'no compile-failure' => [
                 'callbackTypes' => [
-                    CallbackInterface::TYPE_EXECUTE_DOCUMENT_RECEIVED,
-                    CallbackInterface::TYPE_EXECUTE_DOCUMENT_RECEIVED,
-                    CallbackInterface::TYPE_EXECUTE_DOCUMENT_RECEIVED,
+                    CallbackInterface::TYPE_STEP_PASSED,
+                    CallbackInterface::TYPE_STEP_PASSED,
+                    CallbackInterface::TYPE_STEP_PASSED,
                 ],
                 'expectedCompileFailureTypeCount' => 0,
             ],
             'one compile-failure' => [
                 'callbackTypes' => [
-                    CallbackInterface::TYPE_EXECUTE_DOCUMENT_RECEIVED,
-                    CallbackInterface::TYPE_EXECUTE_DOCUMENT_RECEIVED,
-                    CallbackInterface::TYPE_COMPILE_FAILURE,
+                    CallbackInterface::TYPE_STEP_PASSED,
+                    CallbackInterface::TYPE_STEP_PASSED,
+                    CallbackInterface::TYPE_COMPILATION_FAILED,
                 ],
                 'expectedCompileFailureTypeCount' => 1,
             ],
             'two compile-failure' => [
                 'callbackTypes' => [
-                    CallbackInterface::TYPE_EXECUTE_DOCUMENT_RECEIVED,
-                    CallbackInterface::TYPE_EXECUTE_DOCUMENT_RECEIVED,
-                    CallbackInterface::TYPE_COMPILE_FAILURE,
-                    CallbackInterface::TYPE_COMPILE_FAILURE,
+                    CallbackInterface::TYPE_STEP_PASSED,
+                    CallbackInterface::TYPE_STEP_PASSED,
+                    CallbackInterface::TYPE_COMPILATION_FAILED,
+                    CallbackInterface::TYPE_COMPILATION_FAILED,
                 ],
                 'expectedCompileFailureTypeCount' => 2,
             ],
             'five compile-failure' => [
                 'callbackTypes' => [
-                    CallbackInterface::TYPE_EXECUTE_DOCUMENT_RECEIVED,
-                    CallbackInterface::TYPE_EXECUTE_DOCUMENT_RECEIVED,
-                    CallbackInterface::TYPE_COMPILE_FAILURE,
-                    CallbackInterface::TYPE_COMPILE_FAILURE,
-                    CallbackInterface::TYPE_COMPILE_FAILURE,
-                    CallbackInterface::TYPE_COMPILE_FAILURE,
-                    CallbackInterface::TYPE_COMPILE_FAILURE,
+                    CallbackInterface::TYPE_STEP_PASSED,
+                    CallbackInterface::TYPE_STEP_PASSED,
+                    CallbackInterface::TYPE_COMPILATION_FAILED,
+                    CallbackInterface::TYPE_COMPILATION_FAILED,
+                    CallbackInterface::TYPE_COMPILATION_FAILED,
+                    CallbackInterface::TYPE_COMPILATION_FAILED,
+                    CallbackInterface::TYPE_COMPILATION_FAILED,
                 ],
                 'expectedCompileFailureTypeCount' => 5,
             ],
             'two compile-failure, one finished-compilation-failed' => [
                 'callbackTypes' => [
-                    CallbackInterface::TYPE_EXECUTE_DOCUMENT_RECEIVED,
-                    CallbackInterface::TYPE_EXECUTE_DOCUMENT_RECEIVED,
-                    CallbackInterface::TYPE_COMPILE_FAILURE,
-                    CallbackInterface::TYPE_COMPILE_FAILURE,
-                    CallbackInterface::TYPE_FINISHED_COMPILATION_FAILED,
+                    CallbackInterface::TYPE_STEP_PASSED,
+                    CallbackInterface::TYPE_STEP_PASSED,
+                    CallbackInterface::TYPE_COMPILATION_FAILED,
+                    CallbackInterface::TYPE_COMPILATION_FAILED,
+                    CallbackInterface::TYPE_COMPILATION_FAILED,
                 ],
                 'expectedCompileFailureTypeCount' => 3,
             ],
@@ -191,48 +191,28 @@ class CallbackStoreTest extends AbstractFunctionalTest
             ],
             'no job-timeout' => [
                 'callbackTypes' => [
-                    CallbackInterface::TYPE_EXECUTE_DOCUMENT_RECEIVED,
-                    CallbackInterface::TYPE_EXECUTE_DOCUMENT_RECEIVED,
-                    CallbackInterface::TYPE_EXECUTE_DOCUMENT_RECEIVED,
+                    CallbackInterface::TYPE_STEP_PASSED,
+                    CallbackInterface::TYPE_STEP_PASSED,
+                    CallbackInterface::TYPE_STEP_PASSED,
                 ],
                 'expectedJobTimeoutTypeCount' => 0,
             ],
             'one job-timeout' => [
                 'callbackTypes' => [
-                    CallbackInterface::TYPE_EXECUTE_DOCUMENT_RECEIVED,
-                    CallbackInterface::TYPE_EXECUTE_DOCUMENT_RECEIVED,
-                    CallbackInterface::TYPE_JOB_TIMEOUT,
+                    CallbackInterface::TYPE_STEP_PASSED,
+                    CallbackInterface::TYPE_STEP_PASSED,
+                    CallbackInterface::TYPE_JOB_TIME_OUT,
                 ],
                 'expectedJobTimeoutTypeCount' => 1,
             ],
             'two job-timeout' => [
                 'callbackTypes' => [
-                    CallbackInterface::TYPE_EXECUTE_DOCUMENT_RECEIVED,
-                    CallbackInterface::TYPE_EXECUTE_DOCUMENT_RECEIVED,
-                    CallbackInterface::TYPE_JOB_TIMEOUT,
-                    CallbackInterface::TYPE_JOB_TIMEOUT,
-                ],
-                'expectedJobTimeoutTypeCount' => 2,
-            ],
-            'two job-timeout, one finished-job-timeout' => [
-                'callbackTypes' => [
-                    CallbackInterface::TYPE_EXECUTE_DOCUMENT_RECEIVED,
-                    CallbackInterface::TYPE_EXECUTE_DOCUMENT_RECEIVED,
-                    CallbackInterface::TYPE_JOB_TIMEOUT,
-                    CallbackInterface::TYPE_JOB_TIMEOUT,
-                    CallbackInterface::TYPE_FINISHED_JOB_TIMEOUT,
-                ],
-                'expectedJobTimeoutTypeCount' => 3,
-            ],
-            'two job-timeout, one finished-job-timeout, one job/timed-out' => [
-                'callbackTypes' => [
-                    CallbackInterface::TYPE_EXECUTE_DOCUMENT_RECEIVED,
-                    CallbackInterface::TYPE_EXECUTE_DOCUMENT_RECEIVED,
-                    CallbackInterface::TYPE_JOB_TIMEOUT,
-                    CallbackInterface::TYPE_JOB_TIMEOUT,
+                    CallbackInterface::TYPE_STEP_PASSED,
+                    CallbackInterface::TYPE_STEP_PASSED,
+                    CallbackInterface::TYPE_JOB_TIME_OUT,
                     CallbackInterface::TYPE_JOB_TIME_OUT,
                 ],
-                'expectedJobTimeoutTypeCount' => 3,
+                'expectedJobTimeoutTypeCount' => 2,
             ],
         ];
     }
@@ -243,7 +223,7 @@ class CallbackStoreTest extends AbstractFunctionalTest
     private function createCallbacksWithStates(array $states): void
     {
         foreach ($states as $state) {
-            $callback = $this->factory->create(CallbackInterface::TYPE_COMPILE_FAILURE, []);
+            $callback = $this->factory->create(CallbackInterface::TYPE_COMPILATION_FAILED, []);
             $callback->setState($state);
 
             $this->entityManager->persist($callback);

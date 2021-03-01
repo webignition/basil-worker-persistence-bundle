@@ -26,18 +26,18 @@ class CallbackRepositoryTest extends AbstractEntityRepositoryTest
 
     protected function createSingleEntity(): EntityInterface
     {
-        return CallbackEntity::create(CallbackInterface::TYPE_COMPILE_FAILURE, []);
+        return CallbackEntity::create(CallbackInterface::TYPE_COMPILATION_FAILED, []);
     }
 
     protected function createEntityCollection(): array
     {
-        $callback0 = CallbackEntity::create(CallbackInterface::TYPE_COMPILE_FAILURE, []);
+        $callback0 = CallbackEntity::create(CallbackInterface::TYPE_COMPILATION_FAILED, []);
         $callback0->setState(CallbackInterface::STATE_AWAITING);
 
-        $callback1 = CallbackEntity::create(CallbackInterface::TYPE_EXECUTE_DOCUMENT_RECEIVED, []);
+        $callback1 = CallbackEntity::create(CallbackInterface::TYPE_TEST_STARTED, []);
         $callback1->setState(CallbackInterface::STATE_AWAITING);
 
-        $callback2 = CallbackEntity::create(CallbackInterface::TYPE_JOB_TIMEOUT, []);
+        $callback2 = CallbackEntity::create(CallbackInterface::TYPE_JOB_TIME_OUT, []);
         $callback2->setState(CallbackInterface::STATE_COMPLETE);
 
         return [
@@ -59,14 +59,14 @@ class CallbackRepositoryTest extends AbstractEntityRepositoryTest
             ],
             'type compile failure' => [
                 'criteria' => [
-                    'type' => CallbackInterface::TYPE_COMPILE_FAILURE,
+                    'type' => CallbackInterface::TYPE_COMPILATION_FAILED,
                 ],
                 'orderBy' => null,
                 'expectedEntityIndex' => 0,
             ],
             'type execute document received' => [
                 'criteria' => [
-                    'type' => CallbackInterface::TYPE_EXECUTE_DOCUMENT_RECEIVED,
+                    'type' => CallbackInterface::TYPE_TEST_STARTED,
                 ],
                 'orderBy' => null,
                 'expectedEntityIndex' => 1,
@@ -74,14 +74,14 @@ class CallbackRepositoryTest extends AbstractEntityRepositoryTest
             'state awaiting and type execute document received' => [
                 'criteria' => [
                     'state' => CallbackInterface::STATE_AWAITING,
-                    'type' => CallbackInterface::TYPE_EXECUTE_DOCUMENT_RECEIVED,
+                    'type' => CallbackInterface::TYPE_TEST_STARTED,
                 ],
                 'orderBy' => null,
                 'expectedEntityIndex' => 1,
             ],
             'type job timeout' => [
                 'criteria' => [
-                    'type' => CallbackInterface::TYPE_JOB_TIMEOUT,
+                    'type' => CallbackInterface::TYPE_JOB_TIME_OUT,
                 ],
                 'orderBy' => null,
                 'expectedEntityIndex' => 2,
@@ -107,26 +107,26 @@ class CallbackRepositoryTest extends AbstractEntityRepositoryTest
             ],
             'type compile failure' => [
                 'criteria' => [
-                    'type' => CallbackInterface::TYPE_COMPILE_FAILURE,
+                    'type' => CallbackInterface::TYPE_COMPILATION_FAILED,
                 ],
                 'expectedCount' => 1,
             ],
             'type execute document received' => [
                 'criteria' => [
-                    'type' => CallbackInterface::TYPE_EXECUTE_DOCUMENT_RECEIVED,
+                    'type' => CallbackInterface::TYPE_TEST_STARTED,
                 ],
                 'expectedCount' => 1,
             ],
             'state awaiting and type execute document received' => [
                 'criteria' => [
                     'state' => CallbackInterface::STATE_AWAITING,
-                    'type' => CallbackInterface::TYPE_EXECUTE_DOCUMENT_RECEIVED,
+                    'type' => CallbackInterface::TYPE_TEST_STARTED,
                 ],
                 'expectedCount' => 1,
             ],
             'type job timeout' => [
                 'criteria' => [
-                    'type' => CallbackInterface::TYPE_JOB_TIMEOUT,
+                    'type' => CallbackInterface::TYPE_JOB_TIME_OUT,
                 ],
                 'expectedCount' => 1,
             ],

@@ -14,7 +14,7 @@ class CallbackEntityTest extends AbstractFunctionalTest
         $repository = $this->entityManager->getRepository(CallbackEntity::class);
         self::assertCount(0, $repository->findAll());
 
-        $callback = CallbackEntity::create(CallbackEntity::TYPE_COMPILE_FAILURE, []);
+        $callback = CallbackEntity::create(CallbackEntity::TYPE_COMPILATION_FAILED, []);
 
         $this->entityManager->persist($callback);
         $this->entityManager->flush();

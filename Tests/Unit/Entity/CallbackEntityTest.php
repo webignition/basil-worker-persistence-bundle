@@ -12,7 +12,7 @@ class CallbackEntityTest extends TestCase
 {
     public function testIncrementRetryCount(): void
     {
-        $callback = CallbackEntity::create(CallbackInterface::TYPE_COMPILE_FAILURE, []);
+        $callback = CallbackEntity::create(CallbackInterface::TYPE_COMPILATION_FAILED, []);
         self::assertSame(0, $callback->getRetryCount());
 
         $callback->incrementRetryCount();

@@ -224,6 +224,16 @@ class CallbackStoreTest extends AbstractFunctionalTest
                 ],
                 'expectedJobTimeoutTypeCount' => 3,
             ],
+            'two job-timeout, one finished-job-timeout, one job/timed-out' => [
+                'callbackTypes' => [
+                    CallbackInterface::TYPE_EXECUTE_DOCUMENT_RECEIVED,
+                    CallbackInterface::TYPE_EXECUTE_DOCUMENT_RECEIVED,
+                    CallbackInterface::TYPE_JOB_TIMEOUT,
+                    CallbackInterface::TYPE_JOB_TIMEOUT,
+                    CallbackInterface::TYPE_JOB_TIME_OUT,
+                ],
+                'expectedJobTimeoutTypeCount' => 3,
+            ],
         ];
     }
 

@@ -46,7 +46,7 @@ class EntityPersisterTest extends AbstractFunctionalTest
     {
         return [
             'callback' => [
-                'entity' => CallbackEntity::create(CallbackInterface::TYPE_COMPILE_FAILURE, []),
+                'entity' => CallbackEntity::create(CallbackInterface::TYPE_COMPILATION_FAILED, []),
             ],
             'job' => [
                 'entity' => Job::create('label content', 'http://example.com/callback', 600),

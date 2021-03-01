@@ -14,19 +14,6 @@ interface CallbackInterface extends EntityInterface
     public const STATE_FAILED = 'failed';
     public const STATE_COMPLETE = 'complete';
 
-    public const TYPE_COMPILE_FAILURE = 'compile-failure';
-    public const TYPE_COMPILE_SUCCESS = 'compile-success';
-    public const TYPE_EXECUTE_DOCUMENT_RECEIVED = 'execute-document-received';
-    public const TYPE_JOB_TIMEOUT = 'job-timeout';
-    public const TYPE_JOB_COMPLETE = 'job-complete';
-
-    public const TYPE_FINISHED_COMPILATION_FAILED = 'finished-compilation-failed';
-    public const TYPE_FINISHED_JOB_TIMEOUT = 'finished-job-timeout';
-    public const TYPE_FINISHED_JOB_COMPLETE = 'finished-job-complete';
-    public const TYPE_FINISHED_TEST_FAILURE = 'finished-test-failed';
-    public const TYPE_TEST_PROGRESS_STARTED = 'test-progress-started';
-    public const TYPE_TEST_PROGRESS_FINISHED = 'test-progress-finished';
-
     public const TYPE_JOB_STARTED = 'job/started';
     public const TYPE_JOB_TIME_OUT = 'job/timed-out';
     public const TYPE_JOB_COMPLETED = 'job/completed';

@@ -20,6 +20,7 @@ interface CallbackInterface extends EntityInterface
     public const TYPE_JOB_FAILED = 'job/failed';
     public const TYPE_COMPILATION_STARTED = 'compilation/started';
     public const TYPE_COMPILATION_SUCCEEDED = 'compilation/completed';
+    public const TYPE_COMPILATION_PASSED = 'compilation/passed';
     public const TYPE_COMPILATION_FAILED = 'compilation/failed';
     public const TYPE_EXECUTION_STARTED = 'execution/started';
     public const TYPE_EXECUTION_COMPLETED = 'execution/completed';

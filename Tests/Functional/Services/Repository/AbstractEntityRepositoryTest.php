@@ -80,7 +80,6 @@ abstract class AbstractEntityRepositoryTest extends AbstractFunctionalTest
      *
      * @param mixed[] $criteria
      * @param mixed[] $orderBy
-     * @param int|null $expectedEntityIndex
      */
     public function testFindOneBy(array $criteria, ?array $orderBy, ?int $expectedEntityIndex): void
     {
@@ -102,7 +101,6 @@ abstract class AbstractEntityRepositoryTest extends AbstractFunctionalTest
      * @dataProvider countDataProvider
      *
      * @param mixed[] $criteria
-     * @param int $expectedCount
      */
     public function testCount(array $criteria, int $expectedCount): void
     {

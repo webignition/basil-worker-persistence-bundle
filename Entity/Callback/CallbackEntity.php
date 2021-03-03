@@ -48,7 +48,6 @@ class CallbackEntity implements CallbackInterface
      * @param CallbackInterface::TYPE_* $type
      * @param array<mixed> $payload
      *
-     * @return self
      */
     public static function create(string $type, array $payload): self
     {

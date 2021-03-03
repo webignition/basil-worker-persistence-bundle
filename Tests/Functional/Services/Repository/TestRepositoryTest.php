@@ -426,13 +426,8 @@ class TestRepositoryTest extends AbstractEntityRepositoryTest
     }
 
     /**
-     * @param TestConfiguration $configuration
-     * @param string $source
-     * @param string $target
-     * @param int $position
      * @param Test::STATE_* $state
      *
-     * @return Test
      */
     private function createTest(
         TestConfiguration $configuration,

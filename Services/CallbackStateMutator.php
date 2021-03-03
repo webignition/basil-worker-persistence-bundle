@@ -40,7 +40,6 @@ class CallbackStateMutator
     }
 
     /**
-     * @param CallbackInterface $callback
      * @param CallbackInterface::STATE_* $currentState
      * @param CallbackInterface::STATE_* $newState
      */
@@ -52,7 +51,6 @@ class CallbackStateMutator
     }
 
     /**
-     * @param CallbackInterface $callback
      * @param CallbackInterface::STATE_* $state
      */
     private function set(CallbackInterface $callback, string $state): void

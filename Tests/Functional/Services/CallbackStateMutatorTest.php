@@ -222,10 +222,8 @@ class CallbackStateMutatorTest extends AbstractFunctionalTest
     /**
      * @dataProvider setSendingDataProvider
      *
-     * @param CallbackInterface $callback
      * @param CallbackInterface::STATE_* $initialState
      * @param CallbackInterface::STATE_* $expectedState
-     * @param callable $setter
      */
     private function doSetAsStateTest(
         CallbackInterface $callback,

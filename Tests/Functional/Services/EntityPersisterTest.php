@@ -32,7 +32,7 @@ class EntityPersisterTest extends AbstractFunctionalTest
      */
     public function testPersist(EntityInterface $entity): void
     {
-        $repository = $this->entityManager->getRepository(get_class($entity));
+        $repository = $this->entityManager->getRepository($entity::class);
         self::assertCount(0, $repository->findAll());
 
         $this->entityPersister->persist($entity);

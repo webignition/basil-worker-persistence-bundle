@@ -27,7 +27,6 @@ interface EntityRepositoryInterface extends ObjectRepository
     public function count(array $criteria): int;
 
     /**
-     * @param string $alias
      * @param string $indexBy The index for the from.
      */
     public function createQueryBuilder(string $alias, $indexBy = null): QueryBuilder;

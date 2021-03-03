@@ -35,9 +35,7 @@ class Source implements EntityInterface
 
     /**
      * @param Source::TYPE_* $type
-     * @param string $path
      *
-     * @return self
      */
     public static function create(string $type, string $path): self
     {

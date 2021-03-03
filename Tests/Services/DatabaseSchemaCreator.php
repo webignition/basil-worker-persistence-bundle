@@ -10,7 +10,6 @@ use Doctrine\ORM\Tools\SchemaTool;
 class DatabaseSchemaCreator
 {
     /**
-     * @param EntityManagerInterface $entityManager
      * @param array<class-string> $entityClasses
      */
     public function __construct(private EntityManagerInterface $entityManager, private array $entityClasses)

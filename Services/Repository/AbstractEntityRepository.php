@@ -14,20 +14,16 @@ use Doctrine\Persistence\ObjectRepository;
  */
 abstract class AbstractEntityRepository implements EntityRepositoryInterface
 {
-    private EntityManagerInterface $entityManager;
-
     /**
      * @var ObjectRepository<T>
      */
     private ObjectRepository $repository;
 
     /**
-     * @param EntityManagerInterface $entityManager
      * @param class-string<T> $className
      */
-    public function __construct(EntityManagerInterface $entityManager, string $className)
+    public function __construct(private EntityManagerInterface $entityManager, string $className)
     {
-        $this->entityManager = $entityManager;
         $this->repository = $entityManager->getRepository($className);
     }
 
@@ -48,9 +44,6 @@ abstract class AbstractEntityRepository implements EntityRepositoryInterface
         return $this->repository->find($id);
     }
 
-    /**
-     * @return array<T>
-     */
     public function findAll(): array
     {
         return $this->repository->findAll();
@@ -61,8 +54,6 @@ abstract class AbstractEntityRepository implements EntityRepositoryInterface
      * @param string[]|null $orderBy
      * @param int|null      $limit
      * @param int|null      $offset
-     *
-     * @return array<T>
      */
     public function findBy(array $criteria, ?array $orderBy = null, $limit = null, $offset = null): array
     {

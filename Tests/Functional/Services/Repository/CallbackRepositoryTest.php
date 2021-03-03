@@ -138,4 +138,19 @@ class CallbackRepositoryTest extends AbstractEntityRepositoryTest
             ],
         ];
     }
+
+    public function testHasForType(): void
+    {
+        self::assertInstanceOf(CallbackRepository::class, $this->repository);
+
+        $entities = $this->createEntityCollection();
+        foreach ($entities as $entity) {
+            $this->persistEntity($entity);
+        }
+
+        if ($this->repository instanceof CallbackRepository) {
+            self::assertTrue($this->repository->hasForType(CallbackInterface::TYPE_COMPILATION_FAILED));
+            self::assertFalse($this->repository->hasForType(CallbackInterface::TYPE_STEP_PASSED));
+        }
+    }
 }

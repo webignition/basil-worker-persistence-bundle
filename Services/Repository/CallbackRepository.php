@@ -16,4 +16,9 @@ class CallbackRepository extends AbstractEntityRepository
     {
         parent::__construct($entityManager, CallbackEntity::class);
     }
+
+    public function hasForType(string $type): bool
+    {
+        return $this->count(['type' => $type]) > 0;
+    }
 }

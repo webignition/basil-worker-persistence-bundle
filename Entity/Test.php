@@ -44,7 +44,7 @@ class Test implements \JsonSerializable, EntityInterface
     /**
      * @ORM\Column(type="string", length=255)
      *
-     * @var Test::STATE_*
+     * @var self::STATE_*
      */
     private string $state;
 
@@ -97,7 +97,7 @@ class Test implements \JsonSerializable, EntityInterface
     }
 
     /**
-     * @return Test::STATE_*
+     * @return self::STATE_*
      */
     public function getState(): string
     {
@@ -105,7 +105,15 @@ class Test implements \JsonSerializable, EntityInterface
     }
 
     /**
-     * @param Test::STATE_* $state
+     * @param self::STATE_* $state
+     */
+    public function hasState(string $state): bool
+    {
+        return $state === $this->state;
+    }
+
+    /**
+     * @param self::STATE_* $state
      */
     public function setState(string $state): void
     {

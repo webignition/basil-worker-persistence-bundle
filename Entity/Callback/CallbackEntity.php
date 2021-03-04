@@ -21,7 +21,7 @@ class CallbackEntity implements CallbackInterface
     /**
      * @ORM\Column(type="string", length=255)
      *
-     * @var CallbackInterface::STATE_*
+     * @var self::STATE_*
      */
     private string $state;
 
@@ -33,7 +33,7 @@ class CallbackEntity implements CallbackInterface
     /**
      * @ORM\Column(type="string", length=255)
      *
-     * @var CallbackInterface::TYPE_*
+     * @var self::TYPE_*
      */
     private string $type;
 
@@ -45,7 +45,7 @@ class CallbackEntity implements CallbackInterface
     private array $payload;
 
     /**
-     * @param CallbackInterface::TYPE_* $type
+     * @param self::TYPE_* $type
      * @param array<mixed> $payload
      *
      */
@@ -71,7 +71,7 @@ class CallbackEntity implements CallbackInterface
     }
 
     /**
-     * @return CallbackInterface::STATE_*
+     * @return self::STATE_*
      */
     public function getState(): string
     {
@@ -79,7 +79,15 @@ class CallbackEntity implements CallbackInterface
     }
 
     /**
-     * @param CallbackInterface::STATE_* $state
+     * @param self::STATE_* $state
+     */
+    public function hasState(string $state): bool
+    {
+        return $state === $this->state;
+    }
+
+    /**
+     * @param self::STATE_* $state
      */
     public function setState(string $state): void
     {

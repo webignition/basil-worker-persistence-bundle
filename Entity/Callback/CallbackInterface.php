@@ -42,6 +42,11 @@ interface CallbackInterface extends EntityInterface
     /**
      * @param CallbackInterface::STATE_* $state
      */
+    public function hasState(string $state): bool;
+
+    /**
+     * @param CallbackInterface::STATE_* $state
+     */
     public function setState(string $state): void;
 
     public function getRetryCount(): int;

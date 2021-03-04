@@ -24,4 +24,15 @@ class CallbackEntityTest extends TestCase
         $callback->incrementRetryCount();
         self::assertSame(3, $callback->getRetryCount());
     }
+
+    public function testHasState(): void
+    {
+        $callback = CallbackEntity::create(CallbackInterface::TYPE_COMPILATION_FAILED, []);
+        self::assertTrue($callback->hasState(CallbackInterface::STATE_AWAITING));
+        self::assertFalse($callback->hasState(CallbackInterface::STATE_COMPLETE));
+
+        $callback->setState(CallbackInterface::STATE_COMPLETE);
+        self::assertFalse($callback->hasState(CallbackInterface::STATE_AWAITING));
+        self::assertTrue($callback->hasState(CallbackInterface::STATE_COMPLETE));
+    }
 }

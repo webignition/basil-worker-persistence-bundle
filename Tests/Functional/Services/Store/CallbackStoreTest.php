@@ -95,126 +95,21 @@ class CallbackStoreTest extends AbstractFunctionalTest
         ];
     }
 
-    /**
-     * @dataProvider getCompileFailureTypeCountDataProvider
-     *
-     * @param array<CallbackInterface::TYPE_*> $callbackTypes
-     */
-    public function testGetCompileFailureTypeCount(array $callbackTypes, int $expectedCompileFailureTypeCount): void
+    public function testGetTypeCount(): void
     {
-        $this->createCallbacksWithTypes($callbackTypes);
+        $this->createCallbacksWithTypes([
+            CallbackInterface::TYPE_JOB_STARTED,
+            CallbackInterface::TYPE_STEP_PASSED,
+            CallbackInterface::TYPE_STEP_PASSED,
+            CallbackInterface::TYPE_COMPILATION_PASSED,
+            CallbackInterface::TYPE_COMPILATION_PASSED,
+            CallbackInterface::TYPE_COMPILATION_PASSED,
+        ]);
 
-        self::assertSame($expectedCompileFailureTypeCount, $this->store->getCompileFailureTypeCount());
-    }
-
-    /**
-     * @return array[]
-     */
-    public function getCompileFailureTypeCountDataProvider(): array
-    {
-        return [
-            'no callbacks' => [
-                'callbackTypes' => [],
-                'expectedCompileFailureTypeCount' => 0,
-            ],
-            'no compile-failure' => [
-                'callbackTypes' => [
-                    CallbackInterface::TYPE_STEP_PASSED,
-                    CallbackInterface::TYPE_STEP_PASSED,
-                    CallbackInterface::TYPE_STEP_PASSED,
-                ],
-                'expectedCompileFailureTypeCount' => 0,
-            ],
-            'one compile-failure' => [
-                'callbackTypes' => [
-                    CallbackInterface::TYPE_STEP_PASSED,
-                    CallbackInterface::TYPE_STEP_PASSED,
-                    CallbackInterface::TYPE_COMPILATION_FAILED,
-                ],
-                'expectedCompileFailureTypeCount' => 1,
-            ],
-            'two compile-failure' => [
-                'callbackTypes' => [
-                    CallbackInterface::TYPE_STEP_PASSED,
-                    CallbackInterface::TYPE_STEP_PASSED,
-                    CallbackInterface::TYPE_COMPILATION_FAILED,
-                    CallbackInterface::TYPE_COMPILATION_FAILED,
-                ],
-                'expectedCompileFailureTypeCount' => 2,
-            ],
-            'five compile-failure' => [
-                'callbackTypes' => [
-                    CallbackInterface::TYPE_STEP_PASSED,
-                    CallbackInterface::TYPE_STEP_PASSED,
-                    CallbackInterface::TYPE_COMPILATION_FAILED,
-                    CallbackInterface::TYPE_COMPILATION_FAILED,
-                    CallbackInterface::TYPE_COMPILATION_FAILED,
-                    CallbackInterface::TYPE_COMPILATION_FAILED,
-                    CallbackInterface::TYPE_COMPILATION_FAILED,
-                ],
-                'expectedCompileFailureTypeCount' => 5,
-            ],
-            'two compile-failure, one finished-compilation-failed' => [
-                'callbackTypes' => [
-                    CallbackInterface::TYPE_STEP_PASSED,
-                    CallbackInterface::TYPE_STEP_PASSED,
-                    CallbackInterface::TYPE_COMPILATION_FAILED,
-                    CallbackInterface::TYPE_COMPILATION_FAILED,
-                    CallbackInterface::TYPE_COMPILATION_FAILED,
-                ],
-                'expectedCompileFailureTypeCount' => 3,
-            ],
-        ];
-    }
-
-    /**
-     * @dataProvider getJobTimeoutTypeCountDataProvider
-     *
-     * @param array<CallbackInterface::TYPE_*> $callbackTypes
-     */
-    public function testGetJobTimeoutTypeCount(array $callbackTypes, int $expectedJobTimeoutTypeCount): void
-    {
-        $this->createCallbacksWithTypes($callbackTypes);
-
-        self::assertSame($expectedJobTimeoutTypeCount, $this->store->getJobTimeoutTypeCount());
-    }
-
-    /**
-     * @return array[]
-     */
-    public function getJobTimeoutTypeCountDataProvider(): array
-    {
-        return [
-            'no callbacks' => [
-                'callbackTypes' => [],
-                'expectedJobTimeoutTypeCount' => 0,
-            ],
-            'no job-timeout' => [
-                'callbackTypes' => [
-                    CallbackInterface::TYPE_STEP_PASSED,
-                    CallbackInterface::TYPE_STEP_PASSED,
-                    CallbackInterface::TYPE_STEP_PASSED,
-                ],
-                'expectedJobTimeoutTypeCount' => 0,
-            ],
-            'one job-timeout' => [
-                'callbackTypes' => [
-                    CallbackInterface::TYPE_STEP_PASSED,
-                    CallbackInterface::TYPE_STEP_PASSED,
-                    CallbackInterface::TYPE_JOB_TIME_OUT,
-                ],
-                'expectedJobTimeoutTypeCount' => 1,
-            ],
-            'two job-timeout' => [
-                'callbackTypes' => [
-                    CallbackInterface::TYPE_STEP_PASSED,
-                    CallbackInterface::TYPE_STEP_PASSED,
-                    CallbackInterface::TYPE_JOB_TIME_OUT,
-                    CallbackInterface::TYPE_JOB_TIME_OUT,
-                ],
-                'expectedJobTimeoutTypeCount' => 2,
-            ],
-        ];
+        self::assertSame(0, $this->store->getTypeCount(CallbackInterface::TYPE_EXECUTION_COMPLETED));
+        self::assertSame(1, $this->store->getTypeCount(CallbackInterface::TYPE_JOB_STARTED));
+        self::assertSame(2, $this->store->getTypeCount(CallbackInterface::TYPE_STEP_PASSED));
+        self::assertSame(3, $this->store->getTypeCount(CallbackInterface::TYPE_COMPILATION_PASSED));
     }
 
     /**

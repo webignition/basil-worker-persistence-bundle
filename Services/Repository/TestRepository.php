@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace webignition\BasilWorker\PersistenceBundle\Services\Repository;
 
-use Doctrine\ORM\AbstractQuery;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\NonUniqueResultException;
 use Doctrine\ORM\NoResultException;

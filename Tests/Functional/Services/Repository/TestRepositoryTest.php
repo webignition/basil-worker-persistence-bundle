@@ -341,6 +341,162 @@ class TestRepositoryTest extends AbstractEntityRepositoryTest
     }
 
     /**
+     * @dataProvider findNextAwaitingIdIsNullDataProvider
+     *
+     * @param Test[] $tests
+     */
+    public function testFindNextAwaitingIdIsNull(array $tests): void
+    {
+        foreach ($tests as $test) {
+            $this->persistEntity($test);
+        }
+
+        self::assertInstanceOf(TestRepository::class, $this->repository);
+        if ($this->repository instanceof TestRepository) {
+            self::assertNull($this->repository->findNextAwaitingId());
+        }
+    }
+
+    /**
+     * @return array[]
+     */
+    public function findNextAwaitingIdIsNullDataProvider(): array
+    {
+        return [
+            'empty' => [
+                'tests' => [],
+            ],
+            'running, failed, complete' => [
+                'tests' => [
+                    $this->createTest(
+                        TestConfiguration::create('chrome', 'http://example.com/running'),
+                        '',
+                        '',
+                        1,
+                        Test::STATE_RUNNING
+                    ),
+                    $this->createTest(
+                        TestConfiguration::create('chrome', 'http://example.com/failed'),
+                        '',
+                        '',
+                        2,
+                        Test::STATE_FAILED
+                    ),
+                    $this->createTest(
+                        TestConfiguration::create('chrome', 'http://example.com/failed'),
+                        '',
+                        '',
+                        3,
+                        Test::STATE_COMPLETE
+                    ),
+                ],
+            ],
+        ];
+    }
+
+    /**
+     * @dataProvider findNextAwaitingIdNotNullDataProvider
+     *
+     * @param Test[] $tests
+     */
+    public function testFindNextAwaitingIdNotNull(array $tests, int $nextAwaitingIndex): void
+    {
+        foreach ($tests as $test) {
+            $this->persistEntity($test);
+        }
+
+        self::assertInstanceOf(TestRepository::class, $this->repository);
+        if ($this->repository instanceof TestRepository) {
+            $nextAwaitingId = $this->repository->findNextAwaitingId();
+
+            $allTests = $this->findAllTests();
+            $expectedTest = $allTests[$nextAwaitingIndex];
+
+            self::assertSame($nextAwaitingId, $expectedTest->getId());
+        }
+    }
+
+    /**
+     * @return array[]
+     */
+    public function findNextAwaitingIdNotNullDataProvider(): array
+    {
+        $tests = [
+            'awaiting1' => $this->createTest(
+                TestConfiguration::create('chrome', 'http://example.com/awaiting1'),
+                '',
+                '',
+                1
+            ),
+            'awaiting2' => $this->createTest(
+                TestConfiguration::create('chrome', 'http://example.com/awaiting2'),
+                '',
+                '',
+                2
+            ),
+            'running' => $this->createTest(
+                TestConfiguration::create('chrome', 'http://example.com/running'),
+                '',
+                '',
+                3,
+                Test::STATE_RUNNING
+            ),
+            'failed' => $this->createTest(
+                TestConfiguration::create('chrome', 'http://example.com/failed'),
+                '',
+                '',
+                4,
+                Test::STATE_FAILED
+            ),
+            'complete' => $this->createTest(
+                TestConfiguration::create('chrome', 'http://example.com/complete'),
+                '',
+                '',
+                5,
+                Test::STATE_COMPLETE
+            ),
+        ];
+
+        return [
+            'awaiting1' => [
+                'tests' => [
+                    $tests['awaiting1'],
+                ],
+                'expectedNextAwaitingIndex' => 0,
+            ],
+            'awaiting2' => [
+                'tests' => [
+                    $tests['awaiting2'],
+                ],
+                'expectedNextAwaitingIndex' => 0,
+            ],
+            'awaiting1, awaiting2' => [
+                'tests' => [
+                    $tests['awaiting1'],
+                    $tests['awaiting2'],
+                ],
+                'expectedNextAwaitingIndex' => 0,
+            ],
+            'awaiting2, awaiting1' => [
+                'tests' => [
+                    $tests['awaiting2'],
+                    $tests['awaiting1'],
+                ],
+                'expectedNextAwaitingIndex' => 1,
+            ],
+            'running, failed, awaiting1, complete' => [
+                'tests' => [
+                    $tests['running'],
+                    $tests['failed'],
+                    $tests['awaiting1'],
+                    $tests['complete']
+                ],
+                'expectedNextAwaitingIndex' => 2,
+            ],
+        ];
+    }
+
+    /**
      * @dataProvider findAllAwaitingDataProvider
      *
      * @param Test[] $tests
@@ -447,5 +603,23 @@ class TestRepositoryTest extends AbstractEntityRepositoryTest
         $test->setState($state);
 
         return $test;
+    }
+
+    /**
+     * @return Test[]
+     */
+    private function findAllTests(): array
+    {
+        $queryBuilder = $this->entityManager->createQueryBuilder();
+        $queryBuilder
+            ->select('Test')
+            ->from(Test::class, 'Test');
+
+        $query = $queryBuilder->getQuery();
+        $results = $query->getResult();
+
+        return array_filter($results, function ($item) {
+            return $item instanceof Test;
+        });
     }
 }

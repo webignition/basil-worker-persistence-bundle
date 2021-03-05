@@ -217,6 +217,23 @@ class CallbackStoreTest extends AbstractFunctionalTest
         ];
     }
 
+    public function testGetTypeCount(): void
+    {
+        $this->createCallbacksWithTypes([
+            CallbackInterface::TYPE_JOB_STARTED,
+            CallbackInterface::TYPE_STEP_PASSED,
+            CallbackInterface::TYPE_STEP_PASSED,
+            CallbackInterface::TYPE_COMPILATION_PASSED,
+            CallbackInterface::TYPE_COMPILATION_PASSED,
+            CallbackInterface::TYPE_COMPILATION_PASSED,
+        ]);
+
+        self::assertSame(0, $this->store->getTypeCount(CallbackInterface::TYPE_EXECUTION_COMPLETED));
+        self::assertSame(1, $this->store->getTypeCount(CallbackInterface::TYPE_JOB_STARTED));
+        self::assertSame(2, $this->store->getTypeCount(CallbackInterface::TYPE_STEP_PASSED));
+        self::assertSame(3, $this->store->getTypeCount(CallbackInterface::TYPE_COMPILATION_PASSED));
+    }
+
     /**
      * @param array<CallbackInterface::STATE_*> $states
      */

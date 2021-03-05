@@ -25,19 +25,21 @@ class CallbackStore
 
     public function getCompileFailureTypeCount(): int
     {
-        return $this->repository->count([
-            'type' => [
-                CallbackInterface::TYPE_COMPILATION_FAILED,
-            ],
-        ]);
+        return $this->getTypeCount(CallbackInterface::TYPE_COMPILATION_FAILED);
     }
 
     public function getJobTimeoutTypeCount(): int
     {
+        return $this->getTypeCount(CallbackInterface::TYPE_JOB_TIME_OUT);
+    }
+
+    /**
+     * @param CallbackInterface::TYPE_* $type
+     */
+    public function getTypeCount(string $type): int
+    {
         return $this->repository->count([
-            'type' => [
-                CallbackInterface::TYPE_JOB_TIME_OUT,
-            ],
+            'type' => $type,
         ]);
     }
 }

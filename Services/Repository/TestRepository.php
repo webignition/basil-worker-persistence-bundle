@@ -49,20 +49,6 @@ class TestRepository extends AbstractEntityRepository
         return null;
     }
 
-    public function findNextAwaiting(): ?Test
-    {
-        $test = $this->findOneBy(
-            [
-                'state' => Test::STATE_AWAITING,
-            ],
-            [
-                'position' => 'ASC',
-            ]
-        );
-
-        return $test instanceof Test ? $test : null;
-    }
-
     public function findNextAwaitingId(): ?int
     {
         $queryBuilder = $this->createQueryBuilder('Test');

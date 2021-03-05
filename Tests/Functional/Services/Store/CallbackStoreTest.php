@@ -95,56 +95,6 @@ class CallbackStoreTest extends AbstractFunctionalTest
         ];
     }
 
-    /**
-     * @dataProvider getJobTimeoutTypeCountDataProvider
-     *
-     * @param array<CallbackInterface::TYPE_*> $callbackTypes
-     */
-    public function testGetJobTimeoutTypeCount(array $callbackTypes, int $expectedJobTimeoutTypeCount): void
-    {
-        $this->createCallbacksWithTypes($callbackTypes);
-
-        self::assertSame($expectedJobTimeoutTypeCount, $this->store->getJobTimeoutTypeCount());
-    }
-
-    /**
-     * @return array[]
-     */
-    public function getJobTimeoutTypeCountDataProvider(): array
-    {
-        return [
-            'no callbacks' => [
-                'callbackTypes' => [],
-                'expectedJobTimeoutTypeCount' => 0,
-            ],
-            'no job-timeout' => [
-                'callbackTypes' => [
-                    CallbackInterface::TYPE_STEP_PASSED,
-                    CallbackInterface::TYPE_STEP_PASSED,
-                    CallbackInterface::TYPE_STEP_PASSED,
-                ],
-                'expectedJobTimeoutTypeCount' => 0,
-            ],
-            'one job-timeout' => [
-                'callbackTypes' => [
-                    CallbackInterface::TYPE_STEP_PASSED,
-                    CallbackInterface::TYPE_STEP_PASSED,
-                    CallbackInterface::TYPE_JOB_TIME_OUT,
-                ],
-                'expectedJobTimeoutTypeCount' => 1,
-            ],
-            'two job-timeout' => [
-                'callbackTypes' => [
-                    CallbackInterface::TYPE_STEP_PASSED,
-                    CallbackInterface::TYPE_STEP_PASSED,
-                    CallbackInterface::TYPE_JOB_TIME_OUT,
-                    CallbackInterface::TYPE_JOB_TIME_OUT,
-                ],
-                'expectedJobTimeoutTypeCount' => 2,
-            ],
-        ];
-    }
-
     public function testGetTypeCount(): void
     {
         $this->createCallbacksWithTypes([

@@ -23,11 +23,6 @@ class CallbackStore
         ]);
     }
 
-    public function getJobTimeoutTypeCount(): int
-    {
-        return $this->getTypeCount(CallbackInterface::TYPE_JOB_TIME_OUT);
-    }
-
     /**
      * @param CallbackInterface::TYPE_* $type
      */

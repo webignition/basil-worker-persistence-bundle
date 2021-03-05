@@ -7,6 +7,7 @@ namespace webignition\BasilWorker\PersistenceBundle\Services\Repository;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\NonUniqueResultException;
 use Doctrine\ORM\NoResultException;
+use Doctrine\ORM\Query;
 use webignition\BasilWorker\PersistenceBundle\Entity\Test;
 
 /**
@@ -40,19 +41,9 @@ class TestRepository extends AbstractEntityRepository
             ->setMaxResults(1);
 
         $query = $queryBuilder->getQuery();
-        try {
-            $value = $query->getSingleResult($query::HYDRATE_SINGLE_SCALAR);
-            if (ctype_digit($value)) {
-                $value = (int) $value;
-            }
+        $value = $this->getSingleIntegerResult($query);
 
-            if (is_int($value)) {
-                return $value;
-            }
-        } catch (NoResultException | NonUniqueResultException) {
-        }
-
-        return self::DEFAULT_MAX_POSITION;
+        return is_int($value) ? $value : self::DEFAULT_MAX_POSITION;
     }
 
     public function findNextAwaitingId(): ?int
@@ -68,16 +59,7 @@ class TestRepository extends AbstractEntityRepository
 
         $query = $queryBuilder->getQuery();
 
-        try {
-            $idValue = $query->getSingleResult($query::HYDRATE_SINGLE_SCALAR);
-
-            return ctype_digit($idValue)
-                ? (int) $idValue
-                : null;
-        } catch (NoResultException | NonUniqueResultException) {
-        }
-
-        return null;
+        return $this->getSingleIntegerResult($query);
     }
 
     /**
@@ -121,5 +103,22 @@ class TestRepository extends AbstractEntityRepository
         }
 
         return $sources;
+    }
+
+    private function getSingleIntegerResult(Query $query): ?int
+    {
+        try {
+            $value = $query->getSingleResult($query::HYDRATE_SINGLE_SCALAR);
+            if (ctype_digit($value)) {
+                $value = (int) $value;
+            }
+
+            if (is_int($value)) {
+                return $value;
+            }
+        } catch (NoResultException | NonUniqueResultException) {
+        }
+
+        return null;
     }
 }

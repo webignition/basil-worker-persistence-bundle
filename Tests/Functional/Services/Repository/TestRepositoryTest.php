@@ -164,26 +164,11 @@ class TestRepositoryTest extends AbstractEntityRepositoryTest
      */
     public function findMaxPositionDataProvider(): array
     {
-        $tests = [
-            'position1' => $this->createTest(
-                TestConfiguration::create('chrome', 'http://example.com/1'),
-                '',
-                '',
-                1
-            ),
-            'position2' => $this->createTest(
-                TestConfiguration::create('chrome', 'http://example.com/2'),
-                '',
-                '',
-                2
-            ),
-            'position3' => $this->createTest(
-                TestConfiguration::create('chrome', 'http://example.com/3'),
-                '',
-                '',
-                3
-            ),
-        ];
+        $tests = $this->createTestsWithStates([
+            'position1' => Test::STATE_AWAITING,
+            'position2' => Test::STATE_AWAITING,
+            'position3' => Test::STATE_AWAITING,
+        ]);
 
         return [
             'empty' => [
@@ -256,29 +241,11 @@ class TestRepositoryTest extends AbstractEntityRepositoryTest
                 'tests' => [],
             ],
             'running, failed, complete' => [
-                'tests' => [
-                    $this->createTest(
-                        TestConfiguration::create('chrome', 'http://example.com/running'),
-                        '',
-                        '',
-                        1,
-                        Test::STATE_RUNNING
-                    ),
-                    $this->createTest(
-                        TestConfiguration::create('chrome', 'http://example.com/failed'),
-                        '',
-                        '',
-                        2,
-                        Test::STATE_FAILED
-                    ),
-                    $this->createTest(
-                        TestConfiguration::create('chrome', 'http://example.com/failed'),
-                        '',
-                        '',
-                        3,
-                        Test::STATE_COMPLETE
-                    ),
-                ],
+                'tests' => $this->createTestsWithStates([
+                    Test::STATE_RUNNING,
+                    Test::STATE_FAILED,
+                    Test::STATE_COMPLETE,
+                ]),
             ],
         ];
     }
@@ -310,41 +277,13 @@ class TestRepositoryTest extends AbstractEntityRepositoryTest
      */
     public function findNextAwaitingIdNotNullDataProvider(): array
     {
-        $tests = [
-            'awaiting1' => $this->createTest(
-                TestConfiguration::create('chrome', 'http://example.com/awaiting1'),
-                '',
-                '',
-                1
-            ),
-            'awaiting2' => $this->createTest(
-                TestConfiguration::create('chrome', 'http://example.com/awaiting2'),
-                '',
-                '',
-                2
-            ),
-            'running' => $this->createTest(
-                TestConfiguration::create('chrome', 'http://example.com/running'),
-                '',
-                '',
-                3,
-                Test::STATE_RUNNING
-            ),
-            'failed' => $this->createTest(
-                TestConfiguration::create('chrome', 'http://example.com/failed'),
-                '',
-                '',
-                4,
-                Test::STATE_FAILED
-            ),
-            'complete' => $this->createTest(
-                TestConfiguration::create('chrome', 'http://example.com/complete'),
-                '',
-                '',
-                5,
-                Test::STATE_COMPLETE
-            ),
-        ];
+        $tests = $this->createTestsWithStates([
+            'awaiting1' => Test::STATE_AWAITING,
+            'awaiting2' => Test::STATE_AWAITING,
+            'running' => Test::STATE_RUNNING,
+            'failed' => Test::STATE_FAILED,
+            'complete' => Test::STATE_COMPLETE,
+        ]);
 
         return [
             'awaiting1' => [
@@ -408,27 +347,11 @@ class TestRepositoryTest extends AbstractEntityRepositoryTest
      */
     public function findAllAwaitingDataProvider(): array
     {
-        $tests = [
-            'awaiting1' => $this->createTest(
-                TestConfiguration::create('chrome', 'http://example.com/awaiting1'),
-                '',
-                '',
-                1
-            ),
-            'awaiting2' => $this->createTest(
-                TestConfiguration::create('chrome', 'http://example.com/awaiting2'),
-                '',
-                '',
-                2
-            ),
-            'running' => $this->createTest(
-                TestConfiguration::create('chrome', 'http://example.com/running'),
-                '',
-                '',
-                3,
-                Test::STATE_FAILED
-            ),
-        ];
+        $tests = $this->createTestsWithStates([
+            'awaiting1' => Test::STATE_AWAITING,
+            'awaiting2' => Test::STATE_AWAITING,
+            'running' => Test::STATE_RUNNING,
+        ]);
 
         return [
             'empty' => [
@@ -468,6 +391,106 @@ class TestRepositoryTest extends AbstractEntityRepositoryTest
                 'expectedAwaitingTests' => [],
             ],
         ];
+    }
+
+    /**
+     * @dataProvider findUnfinishedCountDataProvider
+     *
+     * @param Test[] $tests
+     */
+    public function testFindUnfinishedCount(array $tests, int $expectedUnfinishedCount): void
+    {
+        foreach ($tests as $test) {
+            $this->persistEntity($test);
+        }
+
+        self::assertInstanceOf(TestRepository::class, $this->repository);
+        if ($this->repository instanceof TestRepository) {
+            self::assertSame($expectedUnfinishedCount, $this->repository->findUnfinishedCount());
+        }
+    }
+
+    /**
+     * @return array[]
+     */
+    public function findUnfinishedCountDataProvider(): array
+    {
+        $tests = $this->createTestsWithStates([
+            'awaiting1' => Test::STATE_AWAITING,
+            'awaiting2' => Test::STATE_AWAITING,
+            'running' => Test::STATE_RUNNING,
+            'failed' => Test::STATE_FAILED,
+            'complete' => Test::STATE_COMPLETE,
+        ]);
+
+        return [
+            'empty' => [
+                'tests' => [],
+                'expectedUnfinishedCount' => 0,
+            ],
+            'awaiting1' => [
+                'tests' => [
+                    $tests['awaiting1'],
+                ],
+                'expectedUnfinishedCount' => 1,
+            ],
+            'awaiting1, awaiting2' => [
+                'tests' => [
+                    $tests['awaiting1'],
+                    $tests['awaiting2'],
+                ],
+                'expectedUnfinishedCount' => 2,
+            ],
+            'awaiting1, running' => [
+                'tests' => [
+                    $tests['awaiting1'],
+                    $tests['running'],
+                ],
+                'expectedUnfinishedCount' => 2,
+            ],
+            'all states' => [
+                'tests' => [
+                    $tests['awaiting1'],
+                    $tests['awaiting2'],
+                    $tests['running'],
+                    $tests['failed'],
+                    $tests['complete'],
+                ],
+                'expectedUnfinishedCount' => 3,
+            ],
+        ];
+    }
+
+    /**
+     * @param array<Test::STATE_*> $states
+     *
+     * @return Test[]
+     */
+    private function createTestsWithStates(array $states): array
+    {
+        $tests = [];
+        $position = 1;
+
+        foreach ($states as $key => $state) {
+            $tests[$key] = $this->createTestWithStateAndPosition($state, $position);
+            $position++;
+        }
+
+        return $tests;
+    }
+
+    /**
+     * @param Test::STATE_* $state
+     */
+    private function createTestWithStateAndPosition(string $state, int $position): Test
+    {
+        return $this->createTest(
+            TestConfiguration::create('chrome', 'http://example.com/complete'),
+            '',
+            '',
+            $position,
+            $state
+        );
     }
 
     /**

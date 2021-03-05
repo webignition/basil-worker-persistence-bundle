@@ -41,10 +41,6 @@ class TestFactory extends AbstractFactory
 
     private function findNextPosition(): int
     {
-        $maxPosition = $this->repository->findMaxPosition();
-
-        return null === $maxPosition
-            ? 1
-            : $maxPosition + 1;
+        return $this->repository->findMaxPosition() + 1;
     }
 }

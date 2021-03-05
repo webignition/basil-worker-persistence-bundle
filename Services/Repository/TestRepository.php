@@ -14,6 +14,8 @@ use webignition\BasilWorker\PersistenceBundle\Entity\Test;
  */
 class TestRepository extends AbstractEntityRepository
 {
+    public const DEFAULT_MAX_POSITION = 0;
+
     public function __construct(EntityManagerInterface $entityManager)
     {
         parent::__construct($entityManager, Test::class);
@@ -29,7 +31,7 @@ class TestRepository extends AbstractEntityRepository
         ]);
     }
 
-    public function findMaxPosition(): ?int
+    public function findMaxPosition(): int
     {
         $queryBuilder = $this->createQueryBuilder('Test');
         $queryBuilder
@@ -40,13 +42,17 @@ class TestRepository extends AbstractEntityRepository
         $query = $queryBuilder->getQuery();
         try {
             $value = $query->getSingleResult($query::HYDRATE_SINGLE_SCALAR);
-            return ctype_digit($value)
-                ? (int) $value
-                : null;
+            if (ctype_digit($value)) {
+                $value = (int) $value;
+            }
+
+            if (is_int($value)) {
+                return $value;
+            }
         } catch (NoResultException | NonUniqueResultException) {
         }
 
-        return null;
+        return self::DEFAULT_MAX_POSITION;
     }
 
     public function findNextAwaitingId(): ?int

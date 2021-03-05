@@ -105,6 +105,20 @@ class TestRepository extends AbstractEntityRepository
         return $sources;
     }
 
+    public function findUnfinishedCount(): int
+    {
+        $queryBuilder = $this->createQueryBuilder('Test');
+        $queryBuilder
+            ->select('count(Test.id)')
+            ->where('Test.state IN (:States)')
+            ->setParameter('States', Test::UNFINISHED_STATES);
+
+        $query = $queryBuilder->getQuery();
+        $value = $this->getSingleIntegerResult($query);
+
+        return is_int($value) ? $value : 0;
+    }
+
     private function getSingleIntegerResult(Query $query): ?int
     {
         try {

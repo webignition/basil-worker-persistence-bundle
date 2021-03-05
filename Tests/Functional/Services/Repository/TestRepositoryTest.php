@@ -471,6 +471,102 @@ class TestRepositoryTest extends AbstractEntityRepositoryTest
     }
 
     /**
+     * @dataProvider findUnfinishedCountDataProvider
+     *
+     * @param Test[] $tests
+     */
+    public function testFindUnfinishedCount(array $tests, int $expectedUnfinishedCount): void
+    {
+        foreach ($tests as $test) {
+            $this->persistEntity($test);
+        }
+
+        self::assertInstanceOf(TestRepository::class, $this->repository);
+        if ($this->repository instanceof TestRepository) {
+            self::assertSame($expectedUnfinishedCount, $this->repository->findUnfinishedCount());
+        }
+    }
+
+    /**
+     * @return array[]
+     */
+    public function findUnfinishedCountDataProvider(): array
+    {
+        $tests = [
+            'awaiting1' => $this->createTest(
+                TestConfiguration::create('chrome', 'http://example.com/awaiting1'),
+                '',
+                '',
+                1
+            ),
+            'awaiting2' => $this->createTest(
+                TestConfiguration::create('chrome', 'http://example.com/awaiting2'),
+                '',
+                '',
+                2
+            ),
+            'running' => $this->createTest(
+                TestConfiguration::create('chrome', 'http://example.com/running'),
+                '',
+                '',
+                3,
+                Test::STATE_RUNNING
+            ),
+            'failed' => $this->createTest(
+                TestConfiguration::create('chrome', 'http://example.com/failed'),
+                '',
+                '',
+                4,
+                Test::STATE_FAILED
+            ),
+            'complete' => $this->createTest(
+                TestConfiguration::create('chrome', 'http://example.com/complete'),
+                '',
+                '',
+                5,
+                Test::STATE_COMPLETE
+            ),
+        ];
+
+        return [
+            'empty' => [
+                'tests' => [],
+                'expectedUnfinishedCount' => 0,
+            ],
+            'awaiting1' => [
+                'tests' => [
+                    $tests['awaiting1'],
+                ],
+                'expectedUnfinishedCount' => 1,
+            ],
+            'awaiting1, awaiting2' => [
+                'tests' => [
+                    $tests['awaiting1'],
+                    $tests['awaiting2'],
+                ],
+                'expectedUnfinishedCount' => 2,
+            ],
+            'awaiting1, running' => [
+                'tests' => [
+                    $tests['awaiting1'],
+                    $tests['running'],
+                ],
+                'expectedUnfinishedCount' => 2,
+            ],
+            'all states' => [
+                'tests' => [
+                    $tests['awaiting1'],
+                    $tests['awaiting2'],
+                    $tests['running'],
+                    $tests['failed'],
+                    $tests['complete'],
+                ],
+                'expectedUnfinishedCount' => 3,
+            ],
+        ];
+    }
+
+    /**
      * @param Test::STATE_* $state
      *
      */

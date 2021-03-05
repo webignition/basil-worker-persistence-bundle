@@ -32,13 +32,22 @@ class TestRepository extends AbstractEntityRepository
 
     public function findMaxPosition(): ?int
     {
-        $test = $this->findOneBy([], [
-            'position' => 'DESC',
-        ]);
+        $queryBuilder = $this->createQueryBuilder('Test');
+        $queryBuilder
+            ->select('Test.position')
+            ->orderBy('Test.position', 'DESC')
+            ->setMaxResults(1);
 
-        return $test instanceof Test
-            ? $test->getPosition()
-            : null;
+        $query = $queryBuilder->getQuery();
+        try {
+            $value = $query->getSingleResult($query::HYDRATE_SINGLE_SCALAR);
+            return ctype_digit($value)
+                ? (int) $value
+                : null;
+        } catch (NoResultException | NonUniqueResultException) {
+        }
+
+        return null;
     }
 
     public function findNextAwaiting(): ?Test
@@ -69,7 +78,7 @@ class TestRepository extends AbstractEntityRepository
         $query = $queryBuilder->getQuery();
 
         try {
-            $idValue = $query->getSingleResult(AbstractQuery::HYDRATE_SINGLE_SCALAR);
+            $idValue = $query->getSingleResult($query::HYDRATE_SINGLE_SCALAR);
 
             return ctype_digit($idValue)
                 ? (int) $idValue

@@ -188,7 +188,7 @@ class TestRepositoryTest extends AbstractEntityRepositoryTest
         return [
             'empty' => [
                 'tests' => [],
-                'expectedMaxPosition' => null,
+                'expectedMaxPosition' => 0,
             ],
             'one test, position 1' => [
                 'tests' => [

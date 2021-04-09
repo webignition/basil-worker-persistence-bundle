@@ -153,7 +153,7 @@ class CallbackStateMutatorTest extends AbstractFunctionalTest
             ],
             CallbackInterface::STATE_QUEUED => [
                 'initialState' => CallbackInterface::STATE_QUEUED,
-                'expectedState' => CallbackInterface::STATE_QUEUED,
+                'expectedState' => CallbackInterface::STATE_FAILED,
             ],
             CallbackInterface::STATE_SENDING => [
                 'initialState' => CallbackInterface::STATE_SENDING,

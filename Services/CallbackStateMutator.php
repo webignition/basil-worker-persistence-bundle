@@ -22,31 +22,22 @@ class CallbackStateMutator
 
     public function setSending(CallbackInterface $callback): void
     {
-        $this->setStateIfState($callback, CallbackInterface::STATE_QUEUED, CallbackInterface::STATE_SENDING);
+        if (CallbackInterface::STATE_QUEUED === $callback->getState()) {
+            $this->set($callback, CallbackInterface::STATE_SENDING);
+        }
     }
 
     public function setFailed(CallbackInterface $callback): void
     {
-        $this->setStateIfState($callback, CallbackInterface::STATE_SENDING, CallbackInterface::STATE_FAILED);
+        if (in_array($callback->getState(), [CallbackInterface::STATE_QUEUED, CallbackInterface::STATE_SENDING])) {
+            $this->set($callback, CallbackInterface::STATE_FAILED);
+        }
     }
 
     public function setComplete(CallbackInterface $callback): void
     {
-        $this->setStateIfState(
-            $callback,
-            CallbackInterface::STATE_SENDING,
-            CallbackInterface::STATE_COMPLETE
-        );
-    }
-
-    /**
-     * @param CallbackInterface::STATE_* $currentState
-     * @param CallbackInterface::STATE_* $newState
-     */
-    private function setStateIfState(CallbackInterface $callback, string $currentState, string $newState): void
-    {
-        if ($currentState === $callback->getState()) {
-            $this->set($callback, $newState);
+        if (CallbackInterface::STATE_SENDING === $callback->getState()) {
+            $this->set($callback, CallbackInterface::STATE_COMPLETE);
         }
     }
 

@@ -116,9 +116,4 @@ class CallbackEntity implements CallbackInterface
     {
         $this->retryCount++;
     }
-
-    public function hasReachedRetryLimit(int $limit): bool
-    {
-        return false === ($this->retryCount < $limit);
-    }
 }

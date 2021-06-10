@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace webignition\BasilWorker\PersistenceBundle\Services\Store;
 
+use webignition\BasilWorker\PersistenceBundle\Entity\Source;
 use webignition\BasilWorker\PersistenceBundle\Services\Repository\SourceRepository;
 
 class SourceStore
@@ -18,14 +19,23 @@ class SourceStore
     }
 
     /**
+     * @param Source::TYPE_*|null $type
+     *
      * @return string[]
      */
-    public function findAllPaths(): array
+    public function findAllPaths(?string $type = null): array
     {
         $queryBuilder = $this->repository
             ->createQueryBuilder('Source')
             ->select('Source.path')
         ;
+
+        if (is_string($type)) {
+            $queryBuilder
+                ->where('Source.type = :type')
+                ->setParameter('type', $type)
+            ;
+        }
 
         $query = $queryBuilder->getQuery();
         $result = $query->getArrayResult();

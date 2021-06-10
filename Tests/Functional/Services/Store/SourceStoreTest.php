@@ -43,9 +43,9 @@ class SourceStoreTest extends AbstractFunctionalTest
     /**
      * @dataProvider findAllPathsDataProvider
      *
-     * @param Source[] $sources
+     * @param Source[]            $sources
      * @param Source::TYPE_*|null $type
-     * @param string[] $expectedPaths
+     * @param string[]            $expectedPaths
      */
     public function testFindAllPaths(array $sources, ?string $type, array $expectedPaths): void
     {

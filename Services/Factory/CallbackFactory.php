@@ -11,7 +11,7 @@ class CallbackFactory extends AbstractFactory
 {
     /**
      * @param CallbackInterface::TYPE_* $type
-     * @param array<mixed> $payload
+     * @param array<mixed>              $payload
      */
     public function create(string $type, array $payload): CallbackInterface
     {

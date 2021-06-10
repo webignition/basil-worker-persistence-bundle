@@ -38,7 +38,8 @@ class TestRepository extends AbstractEntityRepository
         $queryBuilder
             ->select('Test.position')
             ->orderBy('Test.position', 'DESC')
-            ->setMaxResults(1);
+            ->setMaxResults(1)
+        ;
 
         $query = $queryBuilder->getQuery();
         $value = $this->getSingleIntegerResult($query);
@@ -55,7 +56,8 @@ class TestRepository extends AbstractEntityRepository
             ->where('Test.state = :State')
             ->orderBy('Test.position', 'ASC')
             ->setMaxResults(1)
-            ->setParameter('State', Test::STATE_AWAITING);
+            ->setParameter('State', Test::STATE_AWAITING)
+        ;
 
         $query = $queryBuilder->getQuery();
 
@@ -89,7 +91,8 @@ class TestRepository extends AbstractEntityRepository
     {
         $queryBuilder = $this->createQueryBuilder('Test');
         $queryBuilder
-            ->select('Test.source');
+            ->select('Test.source')
+        ;
 
         $query = $queryBuilder->getQuery();
 
@@ -111,7 +114,8 @@ class TestRepository extends AbstractEntityRepository
         $queryBuilder
             ->select('count(Test.id)')
             ->where('Test.state IN (:States)')
-            ->setParameter('States', Test::UNFINISHED_STATES);
+            ->setParameter('States', Test::UNFINISHED_STATES)
+        ;
 
         $query = $queryBuilder->getQuery();
         $value = $this->getSingleIntegerResult($query);

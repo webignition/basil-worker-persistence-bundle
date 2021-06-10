@@ -19,39 +19,23 @@ class SourceStore
     }
 
     /**
+     * @param Source::TYPE_*|null $type
+     *
      * @return string[]
      */
-    public function findAllPaths(): array
+    public function findAllPaths(?string $type = null): array
     {
         $queryBuilder = $this->repository
             ->createQueryBuilder('Source')
             ->select('Source.path')
         ;
 
-        $query = $queryBuilder->getQuery();
-        $result = $query->getArrayResult();
-
-        $paths = [];
-        foreach ($result as $item) {
-            if (is_array($item)) {
-                $paths[] = (string) ($item['path'] ?? null);
-            }
+        if (is_string($type)) {
+            $queryBuilder
+                ->where('Source.type = :type')
+                ->setParameter('type', $type)
+            ;
         }
-
-        return $paths;
-    }
-
-    /**
-     * @return string[]
-     */
-    public function findAllTestPaths(): array
-    {
-        $queryBuilder = $this->repository
-            ->createQueryBuilder('Source')
-            ->select('Source.path')
-            ->where('Source.type = :type')
-            ->setParameter('type', Source::TYPE_TEST)
-        ;
 
         $query = $queryBuilder->getQuery();
         $result = $query->getArrayResult();

@@ -44,9 +44,10 @@ class SourceStoreTest extends AbstractFunctionalTest
      * @dataProvider findAllPathsDataProvider
      *
      * @param Source[] $sources
+     * @param Source::TYPE_*|null $type
      * @param string[] $expectedPaths
      */
-    public function testFindAllPaths(array $sources, array $expectedPaths): void
+    public function testFindAllPaths(array $sources, ?string $type, array $expectedPaths): void
     {
         foreach ($sources as $source) {
             if ($source instanceof Source) {
@@ -55,7 +56,7 @@ class SourceStoreTest extends AbstractFunctionalTest
             }
         }
 
-        self::assertSame($expectedPaths, $this->store->findAllPaths());
+        self::assertSame($expectedPaths, $this->store->findAllPaths($type));
     }
 
     /**
@@ -66,114 +67,84 @@ class SourceStoreTest extends AbstractFunctionalTest
         return [
             'no sources' => [
                 'sources' => [],
+                'type' => null,
                 'expectedPaths' => [],
             ],
-            'has sources test-only sources' => [
+            'test-only sources, type=test' => [
                 'sources' => [
                     Source::create(Source::TYPE_TEST, 'Test/test1.yml'),
                     Source::create(Source::TYPE_TEST, 'Test/test2.yml'),
-                    Source::create(Source::TYPE_TEST, 'Test/test3.yml'),
                 ],
+                'type' => Source::TYPE_TEST,
                 'expectedPaths' => [
                     'Test/test1.yml',
                     'Test/test2.yml',
-                    'Test/test3.yml',
                 ],
             ],
-            'has sources resource-only sources' => [
+            'test-only sources, type=resource' => [
+                'sources' => [
+                    Source::create(Source::TYPE_TEST, 'Test/test1.yml'),
+                ],
+                'type' => Source::TYPE_RESOURCE,
+                'expectedPaths' => [],
+            ],
+            'resource-only sources, type=resource' => [
                 'sources' => [
                     Source::create(Source::TYPE_RESOURCE, 'Page/page1.yml'),
                     Source::create(Source::TYPE_RESOURCE, 'Page/page2.yml'),
-                    Source::create(Source::TYPE_RESOURCE, 'Page/page3.yml'),
                 ],
+                'type' => Source::TYPE_RESOURCE,
                 'expectedPaths' => [
                     'Page/page1.yml',
                     'Page/page2.yml',
-                    'Page/page3.yml',
                 ],
             ],
-            'has sources resource and test sources' => [
+            'resource-only sources, type=test' => [
+                'sources' => [
+                    Source::create(Source::TYPE_RESOURCE, 'Page/page1.yml'),
+                ],
+                'type' => Source::TYPE_TEST,
+                'expectedPaths' => [],
+            ],
+            'mixed-type sources, type=null' => [
                 'sources' => [
                     Source::create(Source::TYPE_RESOURCE, 'Page/page1.yml'),
                     Source::create(Source::TYPE_TEST, 'Test/test1.yml'),
                     Source::create(Source::TYPE_RESOURCE, 'Page/page2.yml'),
                     Source::create(Source::TYPE_TEST, 'Test/test2.yml'),
-                    Source::create(Source::TYPE_RESOURCE, 'Page/page3.yml'),
-                    Source::create(Source::TYPE_TEST, 'Test/test3.yml'),
                 ],
+                'type' => null,
                 'expectedPaths' => [
                     'Page/page1.yml',
                     'Test/test1.yml',
                     'Page/page2.yml',
                     'Test/test2.yml',
-                    'Page/page3.yml',
-                    'Test/test3.yml',
                 ],
             ],
-        ];
-    }
-
-    /**
-     * @dataProvider findAllTestPathsDataProvider
-     *
-     * @param Source[] $sources
-     * @param string[] $expectedPaths
-     */
-    public function testFindAllTestPaths(array $sources, array $expectedPaths): void
-    {
-        foreach ($sources as $source) {
-            if ($source instanceof Source) {
-                $this->entityManager->persist($source);
-                $this->entityManager->flush();
-            }
-        }
-
-        self::assertSame($expectedPaths, $this->store->findAllTestPaths());
-    }
-
-    /**
-     * @return array[]
-     */
-    public function findAllTestPathsDataProvider(): array
-    {
-        return [
-            'no sources' => [
-                'sources' => [],
-                'expectedPaths' => [],
-            ],
-            'has sources test-only sources' => [
-                'sources' => [
-                    Source::create(Source::TYPE_TEST, 'Test/test1.yml'),
-                    Source::create(Source::TYPE_TEST, 'Test/test2.yml'),
-                    Source::create(Source::TYPE_TEST, 'Test/test3.yml'),
-                ],
-                'expectedPaths' => [
-                    'Test/test1.yml',
-                    'Test/test2.yml',
-                    'Test/test3.yml',
-                ],
-            ],
-            'has sources resource-only sources' => [
-                'sources' => [
-                    Source::create(Source::TYPE_RESOURCE, 'Page/page1.yml'),
-                    Source::create(Source::TYPE_RESOURCE, 'Page/page2.yml'),
-                    Source::create(Source::TYPE_RESOURCE, 'Page/page3.yml'),
-                ],
-                'expectedPaths' => [],
-            ],
-            'has sources resource and test sources' => [
+            'mixed-type sources, type=test' => [
                 'sources' => [
                     Source::create(Source::TYPE_RESOURCE, 'Page/page1.yml'),
                     Source::create(Source::TYPE_TEST, 'Test/test1.yml'),
                     Source::create(Source::TYPE_RESOURCE, 'Page/page2.yml'),
                     Source::create(Source::TYPE_TEST, 'Test/test2.yml'),
-                    Source::create(Source::TYPE_RESOURCE, 'Page/page3.yml'),
-                    Source::create(Source::TYPE_TEST, 'Test/test3.yml'),
                 ],
+                'type' => Source::TYPE_TEST,
                 'expectedPaths' => [
                     'Test/test1.yml',
                     'Test/test2.yml',
-                    'Test/test3.yml',
+                ],
+            ],
+            'mixed-type sources, type=resource' => [
+                'sources' => [
+                    Source::create(Source::TYPE_RESOURCE, 'Page/page1.yml'),
+                    Source::create(Source::TYPE_TEST, 'Test/test1.yml'),
+                    Source::create(Source::TYPE_RESOURCE, 'Page/page2.yml'),
+                    Source::create(Source::TYPE_TEST, 'Test/test2.yml'),
+                ],
+                'type' => Source::TYPE_RESOURCE,
+                'expectedPaths' => [
+                    'Page/page1.yml',
+                    'Page/page2.yml',
                 ],
             ],
         ];

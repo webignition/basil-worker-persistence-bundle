@@ -31,13 +31,14 @@ abstract class AbstractEntityRepository implements EntityRepositoryInterface
     {
         return $this->entityManager->createQueryBuilder()
             ->select($alias)
-            ->from($this->getClassName(), $alias, $indexBy);
+            ->from($this->getClassName(), $alias, $indexBy)
+        ;
     }
 
     /**
      * @param mixed $id
      *
-     * @return T|null
+     * @return null|T
      */
     public function find($id)
     {
@@ -51,9 +52,9 @@ abstract class AbstractEntityRepository implements EntityRepositoryInterface
 
     /**
      * @param mixed[]       $criteria
-     * @param string[]|null $orderBy
-     * @param int|null      $limit
-     * @param int|null      $offset
+     * @param null|string[] $orderBy
+     * @param null|int      $limit
+     * @param null|int      $offset
      */
     public function findBy(array $criteria, ?array $orderBy = null, $limit = null, $offset = null): array
     {
@@ -62,9 +63,9 @@ abstract class AbstractEntityRepository implements EntityRepositoryInterface
 
     /**
      * @param mixed[]       $criteria
-     * @param string[]|null $orderBy
+     * @param null|string[] $orderBy
      *
-     * @return T|null
+     * @return null|T
      */
     public function findOneBy(array $criteria, ?array $orderBy = null)
     {

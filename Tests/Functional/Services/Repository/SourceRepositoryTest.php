@@ -13,30 +13,6 @@ use webignition\BasilWorker\PersistenceBundle\Services\Repository\SourceReposito
  */
 class SourceRepositoryTest extends AbstractEntityRepositoryTest
 {
-    protected function getRepository(): ?SourceRepository
-    {
-        $repository = $this->container->get(SourceRepository::class);
-        if ($repository instanceof SourceRepository) {
-            return $repository;
-        }
-
-        return null;
-    }
-
-    protected function createSingleEntity(): EntityInterface
-    {
-        return Source::create(Source::TYPE_TEST, 'Test/test.yml');
-    }
-
-    protected function createEntityCollection(): array
-    {
-        return [
-            Source::create(Source::TYPE_TEST, 'Test/test1.yml'),
-            Source::create(Source::TYPE_TEST, 'Test/test2.yml'),
-            Source::create(Source::TYPE_RESOURCE, 'Page/page.yml'),
-        ];
-    }
-
     public function findOneByDataProvider(): array
     {
         return [
@@ -113,6 +89,30 @@ class SourceRepositoryTest extends AbstractEntityRepositoryTest
                 ],
                 'expectedCount' => 0,
             ],
+        ];
+    }
+
+    protected function getRepository(): ?SourceRepository
+    {
+        $repository = $this->container->get(SourceRepository::class);
+        if ($repository instanceof SourceRepository) {
+            return $repository;
+        }
+
+        return null;
+    }
+
+    protected function createSingleEntity(): EntityInterface
+    {
+        return Source::create(Source::TYPE_TEST, 'Test/test.yml');
+    }
+
+    protected function createEntityCollection(): array
+    {
+        return [
+            Source::create(Source::TYPE_TEST, 'Test/test1.yml'),
+            Source::create(Source::TYPE_TEST, 'Test/test2.yml'),
+            Source::create(Source::TYPE_RESOURCE, 'Page/page.yml'),
         ];
     }
 }

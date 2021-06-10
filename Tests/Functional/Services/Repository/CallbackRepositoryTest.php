@@ -14,39 +14,6 @@ use webignition\BasilWorker\PersistenceBundle\Services\Repository\CallbackReposi
  */
 class CallbackRepositoryTest extends AbstractEntityRepositoryTest
 {
-    protected function getRepository(): ?CallbackRepository
-    {
-        $repository = $this->container->get(CallbackRepository::class);
-        if ($repository instanceof CallbackRepository) {
-            return $repository;
-        }
-
-        return null;
-    }
-
-    protected function createSingleEntity(): EntityInterface
-    {
-        return CallbackEntity::create(CallbackInterface::TYPE_COMPILATION_FAILED, []);
-    }
-
-    protected function createEntityCollection(): array
-    {
-        $callback0 = CallbackEntity::create(CallbackInterface::TYPE_COMPILATION_FAILED, []);
-        $callback0->setState(CallbackInterface::STATE_AWAITING);
-
-        $callback1 = CallbackEntity::create(CallbackInterface::TYPE_TEST_STARTED, []);
-        $callback1->setState(CallbackInterface::STATE_AWAITING);
-
-        $callback2 = CallbackEntity::create(CallbackInterface::TYPE_JOB_TIME_OUT, []);
-        $callback2->setState(CallbackInterface::STATE_COMPLETE);
-
-        return [
-            $callback0,
-            $callback1,
-            $callback2,
-        ];
-    }
-
     public function findOneByDataProvider(): array
     {
         return [
@@ -152,5 +119,38 @@ class CallbackRepositoryTest extends AbstractEntityRepositoryTest
             self::assertTrue($this->repository->hasForType(CallbackInterface::TYPE_COMPILATION_FAILED));
             self::assertFalse($this->repository->hasForType(CallbackInterface::TYPE_STEP_PASSED));
         }
+    }
+
+    protected function getRepository(): ?CallbackRepository
+    {
+        $repository = $this->container->get(CallbackRepository::class);
+        if ($repository instanceof CallbackRepository) {
+            return $repository;
+        }
+
+        return null;
+    }
+
+    protected function createSingleEntity(): EntityInterface
+    {
+        return CallbackEntity::create(CallbackInterface::TYPE_COMPILATION_FAILED, []);
+    }
+
+    protected function createEntityCollection(): array
+    {
+        $callback0 = CallbackEntity::create(CallbackInterface::TYPE_COMPILATION_FAILED, []);
+        $callback0->setState(CallbackInterface::STATE_AWAITING);
+
+        $callback1 = CallbackEntity::create(CallbackInterface::TYPE_TEST_STARTED, []);
+        $callback1->setState(CallbackInterface::STATE_AWAITING);
+
+        $callback2 = CallbackEntity::create(CallbackInterface::TYPE_JOB_TIME_OUT, []);
+        $callback2->setState(CallbackInterface::STATE_COMPLETE);
+
+        return [
+            $callback0,
+            $callback1,
+            $callback2,
+        ];
     }
 }

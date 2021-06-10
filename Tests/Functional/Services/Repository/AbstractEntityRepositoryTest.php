@@ -29,27 +29,6 @@ abstract class AbstractEntityRepositoryTest extends AbstractFunctionalTest
         }
     }
 
-    /**
-     * @return EntityRepositoryInterface<T>
-     */
-    abstract protected function getRepository(): ?EntityRepositoryInterface;
-    abstract protected function createSingleEntity(): EntityInterface;
-
-    /**
-     * @return array[]
-     */
-    abstract protected function findOneByDataProvider(): array;
-
-    /**
-     * @return array[]
-     */
-    abstract protected function countDataProvider(): array;
-
-    /**
-     * @return EntityInterface[]
-     */
-    abstract protected function createEntityCollection(): array;
-
     public function testFind(): void
     {
         $this->assertNull($this->repository->find(0));
@@ -119,6 +98,28 @@ abstract class AbstractEntityRepositoryTest extends AbstractFunctionalTest
         self::assertInstanceOf(QueryBuilder::class, $queryBuilder);
         self::assertSame($this->entityManager, $queryBuilder->getEntityManager());
     }
+
+    /**
+     * @return EntityRepositoryInterface<T>
+     */
+    abstract protected function getRepository(): ?EntityRepositoryInterface;
+
+    abstract protected function createSingleEntity(): EntityInterface;
+
+    /**
+     * @return array[]
+     */
+    abstract protected function findOneByDataProvider(): array;
+
+    /**
+     * @return array[]
+     */
+    abstract protected function countDataProvider(): array;
+
+    /**
+     * @return EntityInterface[]
+     */
+    abstract protected function createEntityCollection(): array;
 
     protected function persistEntity(EntityInterface $entity): void
     {

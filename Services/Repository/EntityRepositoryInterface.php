@@ -15,9 +15,9 @@ interface EntityRepositoryInterface extends ObjectRepository
 {
     /**
      * @param mixed[]       $criteria
-     * @param string[]|null $orderBy
+     * @param null|string[] $orderBy
      *
-     * @return T|null
+     * @return null|T
      */
     public function findOneBy(array $criteria, ?array $orderBy = null);
 
@@ -27,7 +27,7 @@ interface EntityRepositoryInterface extends ObjectRepository
     public function count(array $criteria): int;
 
     /**
-     * @param string $indexBy The index for the from.
+     * @param string $indexBy the index for the from
      */
     public function createQueryBuilder(string $alias, $indexBy = null): QueryBuilder;
 }

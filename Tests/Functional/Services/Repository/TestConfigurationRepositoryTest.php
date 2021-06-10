@@ -13,30 +13,6 @@ use webignition\BasilWorker\PersistenceBundle\Services\Repository\TestConfigurat
  */
 class TestConfigurationRepositoryTest extends AbstractEntityRepositoryTest
 {
-    protected function getRepository(): ?TestConfigurationRepository
-    {
-        $repository = $this->container->get(TestConfigurationRepository::class);
-        if ($repository instanceof TestConfigurationRepository) {
-            return $repository;
-        }
-
-        return null;
-    }
-
-    protected function createSingleEntity(): EntityInterface
-    {
-        return TestConfiguration::create('chrome', 'http://example.com');
-    }
-
-    protected function createEntityCollection(): array
-    {
-        return [
-            TestConfiguration::create('chrome', 'http://example.com/0'),
-            TestConfiguration::create('firefox', 'http://example.com/0'),
-            TestConfiguration::create('chrome', 'http://example.com/1'),
-        ];
-    }
-
     public function findOneByDataProvider(): array
     {
         return [
@@ -100,6 +76,30 @@ class TestConfigurationRepositoryTest extends AbstractEntityRepositoryTest
                 ],
                 'expectedCount' => 1,
             ],
+        ];
+    }
+
+    protected function getRepository(): ?TestConfigurationRepository
+    {
+        $repository = $this->container->get(TestConfigurationRepository::class);
+        if ($repository instanceof TestConfigurationRepository) {
+            return $repository;
+        }
+
+        return null;
+    }
+
+    protected function createSingleEntity(): EntityInterface
+    {
+        return TestConfiguration::create('chrome', 'http://example.com');
+    }
+
+    protected function createEntityCollection(): array
+    {
+        return [
+            TestConfiguration::create('chrome', 'http://example.com/0'),
+            TestConfiguration::create('firefox', 'http://example.com/0'),
+            TestConfiguration::create('chrome', 'http://example.com/1'),
         ];
     }
 }

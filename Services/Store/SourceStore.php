@@ -24,7 +24,8 @@ class SourceStore
     {
         $queryBuilder = $this->repository
             ->createQueryBuilder('Source')
-            ->select('Source.path');
+            ->select('Source.path')
+        ;
 
         $query = $queryBuilder->getQuery();
         $result = $query->getArrayResult();

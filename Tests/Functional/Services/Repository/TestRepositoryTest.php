@@ -29,68 +29,6 @@ class TestRepositoryTest extends AbstractEntityRepositoryTest
         }
     }
 
-    protected function getRepository(): ?TestRepository
-    {
-        $repository = $this->container->get(TestRepository::class);
-        if ($repository instanceof TestRepository) {
-            return $repository;
-        }
-
-        return null;
-    }
-
-    protected function persistEntity(EntityInterface $entity): void
-    {
-        if ($entity instanceof Test) {
-            ObjectReflector::setProperty(
-                $entity,
-                Test::class,
-                'configuration',
-                $this->testConfigurationStore->get($entity->getConfiguration())
-            );
-        }
-
-        parent::persistEntity($entity);
-    }
-
-    protected function createSingleEntity(): EntityInterface
-    {
-        return Test::create(
-            TestConfiguration::create('chrome', 'http://example.com/'),
-            '/app/source/Test/test.yml',
-            '/app/tests/GeneratedTest.php',
-            1,
-            1
-        );
-    }
-
-    protected function createEntityCollection(): array
-    {
-        return [
-            Test::create(
-                TestConfiguration::create('chrome', 'http://example.com/'),
-                '/app/source/Test/test1.yml',
-                '/app/tests/GeneratedTest1.php',
-                4,
-                1
-            ),
-            Test::create(
-                TestConfiguration::create('firefox', 'http://example.com/'),
-                '/app/source/Test/test1.yml',
-                '/app/tests/GeneratedTest2.php',
-                4,
-                2
-            ),
-            Test::create(
-                TestConfiguration::create('chrome', 'http://example.com/'),
-                '/app/source/Test/test2.yml',
-                '/app/tests/GeneratedTest3.php',
-                7,
-                3
-            ),
-        ];
-    }
-
     public function findOneByDataProvider(): array
     {
         return [
@@ -461,6 +399,68 @@ class TestRepositoryTest extends AbstractEntityRepositoryTest
         ];
     }
 
+    protected function getRepository(): ?TestRepository
+    {
+        $repository = $this->container->get(TestRepository::class);
+        if ($repository instanceof TestRepository) {
+            return $repository;
+        }
+
+        return null;
+    }
+
+    protected function persistEntity(EntityInterface $entity): void
+    {
+        if ($entity instanceof Test) {
+            ObjectReflector::setProperty(
+                $entity,
+                Test::class,
+                'configuration',
+                $this->testConfigurationStore->get($entity->getConfiguration())
+            );
+        }
+
+        parent::persistEntity($entity);
+    }
+
+    protected function createSingleEntity(): EntityInterface
+    {
+        return Test::create(
+            TestConfiguration::create('chrome', 'http://example.com/'),
+            '/app/source/Test/test.yml',
+            '/app/tests/GeneratedTest.php',
+            1,
+            1
+        );
+    }
+
+    protected function createEntityCollection(): array
+    {
+        return [
+            Test::create(
+                TestConfiguration::create('chrome', 'http://example.com/'),
+                '/app/source/Test/test1.yml',
+                '/app/tests/GeneratedTest1.php',
+                4,
+                1
+            ),
+            Test::create(
+                TestConfiguration::create('firefox', 'http://example.com/'),
+                '/app/source/Test/test1.yml',
+                '/app/tests/GeneratedTest2.php',
+                4,
+                2
+            ),
+            Test::create(
+                TestConfiguration::create('chrome', 'http://example.com/'),
+                '/app/source/Test/test2.yml',
+                '/app/tests/GeneratedTest3.php',
+                7,
+                3
+            ),
+        ];
+    }
+
     /**
      * @param array<Test::STATE_*> $states
      *
@@ -473,7 +473,7 @@ class TestRepositoryTest extends AbstractEntityRepositoryTest
 
         foreach ($states as $key => $state) {
             $tests[$key] = $this->createTestWithStateAndPosition($state, $position);
-            $position++;
+            ++$position;
         }
 
         return $tests;
@@ -495,7 +495,6 @@ class TestRepositoryTest extends AbstractEntityRepositoryTest
 
     /**
      * @param Test::STATE_* $state
-     *
      */
     private function createTest(
         TestConfiguration $configuration,
@@ -525,7 +524,8 @@ class TestRepositoryTest extends AbstractEntityRepositoryTest
         $queryBuilder = $this->entityManager->createQueryBuilder();
         $queryBuilder
             ->select('Test')
-            ->from(Test::class, 'Test');
+            ->from(Test::class, 'Test')
+        ;
 
         $query = $queryBuilder->getQuery();
         $results = $query->getResult();

@@ -68,7 +68,7 @@ class SourceStoreTest extends AbstractFunctionalTest
                 'sources' => [],
                 'expectedPaths' => [],
             ],
-            'has sources' => [
+            'has sources test-only sources' => [
                 'sources' => [
                     Source::create(Source::TYPE_TEST, 'Test/test1.yml'),
                     Source::create(Source::TYPE_TEST, 'Test/test2.yml'),
@@ -77,6 +77,36 @@ class SourceStoreTest extends AbstractFunctionalTest
                 'expectedPaths' => [
                     'Test/test1.yml',
                     'Test/test2.yml',
+                    'Test/test3.yml',
+                ],
+            ],
+            'has sources resource-only sources' => [
+                'sources' => [
+                    Source::create(Source::TYPE_TEST, 'Page/page1.yml'),
+                    Source::create(Source::TYPE_TEST, 'Page/page2.yml'),
+                    Source::create(Source::TYPE_TEST, 'Page/page3.yml'),
+                ],
+                'expectedPaths' => [
+                    'Page/page1.yml',
+                    'Page/page2.yml',
+                    'Page/page3.yml',
+                ],
+            ],
+            'has sources resource and test sources' => [
+                'sources' => [
+                    Source::create(Source::TYPE_TEST, 'Page/page1.yml'),
+                    Source::create(Source::TYPE_TEST, 'Test/test1.yml'),
+                    Source::create(Source::TYPE_TEST, 'Page/page2.yml'),
+                    Source::create(Source::TYPE_TEST, 'Test/test2.yml'),
+                    Source::create(Source::TYPE_TEST, 'Page/page3.yml'),
+                    Source::create(Source::TYPE_TEST, 'Test/test3.yml'),
+                ],
+                'expectedPaths' => [
+                    'Page/page1.yml',
+                    'Test/test1.yml',
+                    'Page/page2.yml',
+                    'Test/test2.yml',
+                    'Page/page3.yml',
                     'Test/test3.yml',
                 ],
             ],
